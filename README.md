@@ -1,18 +1,18 @@
-#Udacity Front End Nanodegree Project: Neighborhood Map
+# Udacity Front End Nanodegree Project: Neighborhood Map
 ```
 ```
-##Project Description:
-- This project is the fifth major project for Udacity's Front End Nanodegree Program. This application is a local neighborhood map listing the 10 top rated All-You-Can-Eat Korean BBQ spots in Orange County.
+## Project Description:
+- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com). This application is a local neighborhood map listing the 10 top rated All-You-Can-Eat Korean BBQ spots in Orange County.
 
-##Project Criteria:
+## Project Criteria:
 - Develop a single-page application featuring a map of a particular neighborhood.
 - Add additional functionality to this application, including: map markers to identify popular locations or places to visit, a search function to easily discover these locations, and a list-view to support simple browsing of all locations.
 - Research and implement third-party APIs that provide additional information about each of these locations (such as StreetView images, Wikipedia articles, Yelp reviews, etc).
 
-###Live Version:(to be updated later)
+### Live Version:(to be updated later)
 ```
 ```
-##Intro
+## Intro
 - I first decided to draw inspiration from other projects to understand the flow, design and methodologies of other developers who have also undertaken the same project for Udacity. This was to also get a better understanding of other build tools/APIs used for the development of the app, as well as the overview of the file organization and practice.
 * List of developers & links to their reference projects:
 [lacyjpr](https://github.com/lacyjpr/neighborhood)
@@ -24,7 +24,7 @@
 
 ```
 ```
-###Build tools/technologies (to be used)
+### Build tools/technologies (to be used)
 - Google Maps API
 - Google Street View API
 - Grunt
@@ -32,9 +32,10 @@
 - Knockout JS framework
 ```
 ```
-###Instructions on how to run (to be continued)
+### Instructions on how to run (to be continued)
 
-###License
+### License
+
 This project is licensed under the [MIT LICENSE](https://opensource.org/licenses/MIT)
 
 Copyright 2017 Julius Vergara

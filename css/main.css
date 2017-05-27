@@ -1,0 +1,30 @@
+/* Style CSS */
+* {
+
+}
+
+h1, h2 {
+
+}
+
+html,
+body {
+  font-family: Arial, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  height: 100%;
+}
+
+/* Responsive CSS*/
+
+@media query {
+
+}
+
+@media query {
+
+}
