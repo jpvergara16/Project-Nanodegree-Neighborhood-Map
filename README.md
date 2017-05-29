@@ -13,14 +13,15 @@
 ```
 ```
 ## Intro
-- I first decided to draw inspiration from other projects to understand the flow, design and methodologies of other developers who have also undertaken the same project for Udacity. This was to also get a better understanding of other build tools/APIs used for the development of the app, as well as the overview of the file organization and practice.
-* List of developers & links to their reference projects:
-[lacyjpr](https://github.com/lacyjpr/neighborhood)
-[kkufieta](https://github.com/kkufieta/neighborhoodMap)
-[JenniferCruz](https://github.com/JenniferCruz/neighborhood)
-[richgieg](https://github.com/richgieg/NeighborhoodMap)
-[renurevzranju](https://github.com/renurevzranju/map)
-[tamminhdao](https://github.com/tamminhdao/NeighborhoodMap)
+I first decided to draw inspiration through Github from other projects to understand the flow, design and methodologies of other developers who have also undertaken the same project for Udacity. This was to also get a better understanding of other build tools/APIs used for the development of the app, as well as the overview of the file organization and practice.
+
+List of developers & links to their reference projects:
+- [lacyjpr](https://github.com/lacyjpr/neighborhood)
+- [kkufieta](https://github.com/kkufieta/neighborhoodMap)
+- [JenniferCruz](https://github.com/JenniferCruz/neighborhood)
+- [richgieg](https://github.com/richgieg/NeighborhoodMap)
+- [renurevzranju](https://github.com/renurevzranju/map)
+- [tamminhdao](https://github.com/tamminhdao/NeighborhoodMap)
 
 ```
 ```
@@ -30,6 +31,7 @@
 - Grunt
 - Bootstrap JS framework
 - Knockout JS framework
+- [Snazzymaps - Mapbox Clean Theme](https://snazzymaps.com/style/119/mapbox-clean)
 ```
 ```
 ### Instructions on how to run (to be continued)
