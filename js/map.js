@@ -1,8 +1,6 @@
 /* ====== GOOGLEMAPS ======= */
 // Create necessary map variables
-var map,
-infowindow,
-markers = []; // array for listing markers
+var map;
 
 // Initialize map function
 function initMap() {
@@ -130,6 +128,24 @@ function initMap() {
     mapTypeControl: false
   });
 
+  //Attribution: http://stackoverflow.com/questions/8792676/center-google-maps-v3-on-browser-resize-responsive
+  //Keep map centered during resizing window
+  var center;
+
+  function calculateCenter() {
+    center = map.getCenter();
+  }
+  google.maps.event.addDomListener(map,
+    'idle',
+    function() {
+      calculateCenter();
+    });
+  google.maps.event.addDomListener(
+    window, 'resize',
+    function() {
+      map.setCenter(center);
+    });
+
   var largeInfowindow = new google.maps.InfoWindow();
 
   //Styling for markers, one for default, one for user mouse over.
@@ -164,6 +180,9 @@ function initMap() {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
+
+    // Applies ViewModel when map loads
+    ko.applyBindings(new ViewModel());
   }
 }
 
@@ -205,6 +224,10 @@ function populateInfoWindow(marker, infowindow) {
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
           // Open the infowindow on the correct marker.
           infowindow.open(map, marker);
+          infowindow.addListener('closeclick', function() {
+            infowindow.close();
+            marker.setAnimation(null);
+          });
         }
       }
 
@@ -220,10 +243,24 @@ function makeMarkerIcon(markerColor) {
   return markerImage;
 }
 
-//Error Message for Google Maps APIs
-function errorMessage () {
-  var error = '<h2 align="center"> GOOGLE MAPS UNAVAILABLE</h2>';
-  error += '<h3 align="center"> Please try again later! </h3>'
-  $('.options-box').append(error);
-  $('#map').append(error);
+//Error handling function when google maps api fails to return
+function googleErrorHandler() {
+	$('#map-error').html(
+		'<h2>Unable to load Google Maps resources. Please try again later</h2>'
+	);
 }
+
+//hamburger menu functionality from udacity's
+//responsive web design fundamentals
+//updated to use knockout click binding
+var main = document.querySelector(
+	'.main');
+var drawer = document.querySelector(
+	'#drawer')
+
+//when the menu icon is clicked, the filter menu slides in
+//and the map/menu shift to the right
+this.openMenu = function() {
+	drawer.classList.toggle('open');
+	main.classList.toggle('moveRight');
+};
