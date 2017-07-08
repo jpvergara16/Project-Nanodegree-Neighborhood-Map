@@ -13,7 +13,7 @@
 ```
 ```
 ## Intro
-I first decided to draw inspiration through Github from other projects to understand the flow, design and methodologies of other developers who have also undertaken the same project for Udacity. This was to also get a better understanding of other build tools/APIs used for the development of the app, as well as the overview of the file organization and practice.
+I first decided to draw inspiration through Github from other projects to understand the flow, design and methodologies of other developers who have also undertaken the same project for Udacity. This was to also get a better understanding of other build tools/APIs used for the development of the app, the additional resources they used to help build their projects, as well as the overview of their file organization and practice.
 
 List of developers & links to their reference projects:
 - [lacyjpr](https://github.com/lacyjpr/neighborhood)

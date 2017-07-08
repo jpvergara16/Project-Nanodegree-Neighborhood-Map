@@ -8,31 +8,35 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
-  	<div class="container">
-      <header>
+    <header>
         <h2 class="title">Orange County: Best All-You-Can-Eat Korean BBQ Locations</h2>
-      </header>
-  		<nav id="drawer" class="list-view">
-  			<p>Filter:
-  				<input data-bind="textInput: filter"/>
-  			</p>
-  			<ul data-bind="foreach: filteredLocations">
-  				<li class="item" data-bind="text: title, click: $parent.setLocation"></li>
-  			</ul>
-  		</nav>
-  		<div class="main">
-  			<a id="menu" data-bind="click: openMenu" href="#">
-  				<img src="img/ham.svg" alt="menu toggle">
-  			</a>
-  			<div id="map" class="map-canvas"></div>
-  			<div id="map-error"></div>
-  		</div>
-  	</div>
+    </header>
+
+    <section class="col-sm-3 content">
+      <div id="text-content" data-bind="visible: !windowIsSmall() || !isSectionHidden() ">
+            <p>
+              A look at some of the best asian dining establishments around Orange County, California
+            </p>
+
+            <div class="form-group">
+                <em>Filter by: </em>
+                <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}" class="form-control"></select>
+            </div>
+
+            <ul data-bind="foreach: locations" class="locations-list">
+                <li data-bind="text: $data.name, visible: $data.visible,
+                   css: { selected: $data == $root.selectedLocation() },
+                   click: $root.onItemClick" class="location-item"></li>
+            </ul>
+        </div>
+    </section>
+    <div id="map"></div>
+    <div id="map-error"></div>
+
     <!-- Load JS lib/files -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/lib/knockout-3.4.2.min.js"></script>
     <script src="js/lib/bootstrap-3.3.7.min.js"></script>
-    <script src="js/lib/jquery-3.2.1.min.js"></script>
     <script src="js/location.js"></script>
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>

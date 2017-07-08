@@ -1,6 +1,6 @@
 /* ====== GOOGLEMAPS ======= */
-// Create necessary map variables
 var map;
+var markers = [];
 
 // Initialize map function
 function initMap() {
@@ -128,24 +128,6 @@ function initMap() {
     mapTypeControl: false
   });
 
-  //Attribution: http://stackoverflow.com/questions/8792676/center-google-maps-v3-on-browser-resize-responsive
-  //Keep map centered during resizing window
-  var center;
-
-  function calculateCenter() {
-    center = map.getCenter();
-  }
-  google.maps.event.addDomListener(map,
-    'idle',
-    function() {
-      calculateCenter();
-    });
-  google.maps.event.addDomListener(
-    window, 'resize',
-    function() {
-      map.setCenter(center);
-    });
-
   var largeInfowindow = new google.maps.InfoWindow();
 
   //Styling for markers, one for default, one for user mouse over.
@@ -180,9 +162,6 @@ function initMap() {
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
-
-    // Applies ViewModel when map loads
-    ko.applyBindings(new ViewModel());
   }
 }
 
@@ -264,3 +243,5 @@ this.openMenu = function() {
 	drawer.classList.toggle('open');
 	main.classList.toggle('moveRight');
 };
+
+

@@ -1,15 +1,18 @@
 /* ====== VIEWMODEL ======= */
 // Location function to call location properties
 var Location = function(data) {
-	this.title = data.title;
-	this.location = data.location;
+	var self = this;
+	self.title = data.title;
+	self.location = data.location;
+	self.mapMarker = null; // mapMarker will be updated when map markers are created
+	self.visible = ko.observable(true); // this property will allow to filter the list of locations in UI
+	return self;
 };
 
 var ViewModel = function() {
 	var self = this;
 	//an array to store all the locations in
-	this.locationList = ko.observableArray(
-		[]);
+	this.locationList = ko.observableArray([]);
 
 	//the list that will appear when being filtered by a keyword
 	this.filter = ko.observable();
@@ -31,6 +34,37 @@ var ViewModel = function() {
 	map.fitBounds(bounds);
 
 };
+
+// Attribution for filter: http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
+// Idea on how to organize it came from this blog with some modifications eg. display/hide markers
+//It takes in a filter input
+//if not input is given, displays all the locations and all the markers are set on the map
+//if an input is given, it compares the input with the title of each location in locationList
+//and also sets them on the map if they are true - this is after being placed in the locationList
+//updated using indexOf rather than startsWith to make the filter less strict
+this.filteredLocations = ko.computed(
+	function() {
+		var filter = self.filter();
+		if (!self.filter()) {
+			self.locationList().forEach(
+				function(location) {
+					location.marker.setMap(map);
+				});
+			return self.locationList();
+		} else {
+			return ko.utils.arrayFilter(self.locationList(),
+				function(loc) {
+					if (loc.title.toLowerCase().indexOf(
+							filter.toLowerCase()) !== -1) {
+						loc.marker.setMap(map);
+					} else {
+						loc.marker.setMap(null);
+					}
+					return loc.title.toLowerCase()
+						.indexOf(filter.toLowerCase() !== -1);
+				});
+		}
+	}, self);
 
 	//bounce when location is clicked
 	function toggleBounce(marker) {
@@ -58,4 +92,13 @@ var ViewModel = function() {
 		populateInfoWindow(clickedLocation.marker,largeInfoWindow);
 		self.currentLocation(clickedLocation);
   };
+};
+
+var viewModel = new ViewModel();
+ko.applyBindings(viewModel);
+
+window.onresize = function() {
+    // Idea from
+    // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+    viewModel.windowWidth(window.innerWidth);
 };

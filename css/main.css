@@ -6,7 +6,7 @@ body {
   padding: 0;
 }
 
-#map {
+#map, #map-error {
   height: 100%;
 }
 
