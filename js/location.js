@@ -1,6 +1,6 @@
 /* ====== MODEL ======= */
 // LatLng locations for restaurants
-var locations = [{
+var resLocations = [{
       title: 'Cham Sut Gol',
       location: {
           lat: 33.773451,

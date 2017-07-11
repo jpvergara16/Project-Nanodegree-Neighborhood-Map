@@ -10,88 +10,38 @@ var Location = function(data) {
 };
 
 var ViewModel = function() {
-	var self = this;
-	//an array to store all the locations in
-	this.locationList = ko.observableArray([]);
+    var maxSectWidth = 767;
+    var self = this;
 
-	//the list that will appear when being filtered by a keyword
-	this.filter = ko.observable();
+    self.locations = new ko.observableArray([]);
 
-	//looping through each item in locations list and adding it to the array
-	locations.forEach(function(locationItem) {
-		self.locationList.push(new Location(locationItem));
-	});
+    resLocations.forEach(function(location) {
+      self.locations.push(new Location(location));
+    });
 
-		//onclick event to open infoWindow updated to also toggleBounce
-		location.marker.addListener('click', function() {
-				populateInfoWindow(this,largeInfoWindow);
-				toggleBounce(this);
-			});
+    self.selectedLocation = ko.observable(undefined); // updated when user clicks on a location
 
-		bounds.extend(location.marker.position);
+    // to detect when window is resized
+    self.windowWidth = ko.observable(window.innerWidth);
+    // will be used to hide intro and filter section when browser is shrinked
+    // or page is loaded from a small device
+    self.HideSect = ko.observable(self.windowWidth() < maxSectWidth);
 
+    // BEHAVIOUR
+    self.onLocClick = function(location, caller) {
+        if (location === self.selectedLocation())
+            self.selectedLocation('undefined');
+        else
+            self.selectedLocation(location);
+        // avoid circular reference
+        if (caller !== map)
+            map.onMarkerClick(location.mapMarker, location, viewModel);
+    };
 
-	map.fitBounds(bounds);
+    self.windowIsSmall = function() {
+      return self.windowWidth() < maxSectWidth;
+    };
 
-};
-
-// Attribution for filter: http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
-// Idea on how to organize it came from this blog with some modifications eg. display/hide markers
-//It takes in a filter input
-//if not input is given, displays all the locations and all the markers are set on the map
-//if an input is given, it compares the input with the title of each location in locationList
-//and also sets them on the map if they are true - this is after being placed in the locationList
-//updated using indexOf rather than startsWith to make the filter less strict
-this.filteredLocations = ko.computed(
-	function() {
-		var filter = self.filter();
-		if (!self.filter()) {
-			self.locationList().forEach(
-				function(location) {
-					location.marker.setMap(map);
-				});
-			return self.locationList();
-		} else {
-			return ko.utils.arrayFilter(self.locationList(),
-				function(loc) {
-					if (loc.title.toLowerCase().indexOf(
-							filter.toLowerCase()) !== -1) {
-						loc.marker.setMap(map);
-					} else {
-						loc.marker.setMap(null);
-					}
-					return loc.title.toLowerCase()
-						.indexOf(filter.toLowerCase() !== -1);
-				});
-		}
-	}, self);
-
-	//bounce when location is clicked
-	function toggleBounce(marker) {
-		if (marker.getAnimation() !== null) {
-			marker.setAnimation(null);
-		} else {
-			for (var i = 0; i < self.locationList().length; i++) {
-				var mark = self.locationList()[i].marker;
-				if (mark.getAnimation() !== null) {
-					mark.setAnimation(null);
-				}
-			} marker.setAnimation(google.maps.Animation.BOUNCE);
-		}
-	}
-
-	//initially sets the current location to the first item in locationList
-	this.currentLocation = ko.observable(this.locationList()[0]);
-
-
-	//this is where the location is set once it has been clicked on
-	//it also makes the (marker bounce and infoWindow open when selected
-	//from the list
-	this.setLocation = function(clickedLocation) {
-		toggleBounce(clickedLocation.marker);
-		populateInfoWindow(clickedLocation.marker,largeInfoWindow);
-		self.currentLocation(clickedLocation);
-  };
 };
 
 var viewModel = new ViewModel();
