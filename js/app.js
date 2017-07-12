@@ -19,13 +19,16 @@ var ViewModel = function() {
       self.locations.push(new Location(location));
     });
 
+		self.tags = ko.observableArray(type); // available categories for filtering are displayed in UI drop down
+    self.selectedFilter = ko.observable('undefined'); // updated when user selects a new tag from the drop down
     self.selectedLocation = ko.observable(undefined); // updated when user clicks on a location
+
 
     // to detect when window is resized
     self.windowWidth = ko.observable(window.innerWidth);
     // will be used to hide intro and filter section when browser is shrinked
     // or page is loaded from a small device
-    self.HideSect = ko.observable(self.windowWidth() < maxSectWidth);
+    self.isSectionHidden = ko.observable(self.windowWidth() < maxSectWidth);
 
     // BEHAVIOUR
     self.onLocClick = function(location, caller) {
@@ -37,6 +40,33 @@ var ViewModel = function() {
         if (caller !== map)
             map.onMarkerClick(location.mapMarker, location, viewModel);
     };
+
+		self.onFilter = function(om) {
+		var filterTag = om.selectedFilter();
+		var markersToShow = [];
+		var markersToHide = [];
+		for (var i = 0; i < self.locations().length; i++) {
+				var currentLocation = self.locations()[i];
+				if (currentLocation.tags.includes(filterTag)) {
+						currentLocation.visible(true);
+						markersToShow.push(currentLocation.mapMarker);
+				} else {
+						currentLocation.visible(false);
+						markersToHide.push(currentLocation.mapMarker);
+				}
+		}
+
+		map.showMarkers(markersToShow);
+		map.hideMarkers(markersToHide);
+};
+
+		self.hideFilterSection = function() {
+			 self.isSectionHidden(true);
+	 };
+
+	 self.showFilterSection = function() {
+			 self.isSectionHidden(false);
+	 };
 
     self.windowIsSmall = function() {
       return self.windowWidth() < maxSectWidth;

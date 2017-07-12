@@ -12,25 +12,10 @@ function initMap() {
     mapTypeControl: false
   });
 
-  //Attribution: http://stackoverflow.com/questions/8792676/center-google-maps-v3-on-browser-resize-responsive
-  //Keep map centered during resizing window
-  var center;
-
-  function calculateCenter() {
-    center = map.getCenter();
-  }
-  google.maps.event.addDomListener(map,
-    'idle',
-    function() {
-      calculateCenter();
-    });
-  google.maps.event.addDomListener(
-    window, 'resize',
-    function() {
-      map.setCenter(center);
-    });
-
-  var largeInfowindow = new google.maps.InfoWindow();
+  //Declare info window when map initializes
+  var newInfoWindow = new google.maps.InfoWindow();
+  //Declare initial marker animation
+  var currentAnimatedMarker = 'undefined';
 
   // Loop through location array to create marker array on intialize
   for (var i = 0; i < resLocations.length; i++) {
@@ -50,7 +35,7 @@ function initMap() {
     markers.push(marker);
     // Creates onclick event to open infowindow for each marker
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
+      populateInfoWindow(this, newInfoWindow);
     });
     //Styling for markers, one for default, one for user mouse over.
     var defaultIcon = makeMarkerIcon('2F5F8F');
@@ -63,52 +48,56 @@ function initMap() {
       this.setIcon(defaultIcon);
     });
   }
+
+  function onMarkerClick(marker, location, caller) {
+        var markerAnimation = marker.getAnimation();
+        // Quit the currently animated marker, if selected
+        if (this.currentAnimatedMarker !== 'undefined')
+            this.currentAnimatedMarker.setAnimation(null);
+        // Store a reference to this marker, to quit when a marker is clicked again
+        this.currentAnimatedMarker = marker;
+        // if clicked marker was already animated, quit it
+        if (markerAnimation !== null) {
+            marker.setAnimation(null);
+            map.infoWindow.close();
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+        if (caller !== viewModel)
+            viewModel.onItemClick(location, map);
+    }
+    //functionality for filtering location markers
+    function showMarkers(markers) {
+        markers.forEach(function(marker) {
+            marker.setVisible(true);
+        });
+    }
+    function hideMarkers(markers) {
+        markers.forEach(function(marker) {
+            marker.setVisible(false);
+        });
+    }
 }
 
 // Function populates infowindow when marker is clicked
-function populateInfoWindow(marker, infowindow) {
-  // Check if infowindow is not already opened on current marker
-  if (infowindow.marker != marker) {
-          // Clear the infowindow content to give the streetview time to load.
-          infowindow.setContent('');
-          infowindow.marker = marker;
-          // Make sure the marker property is cleared if the infowindow is closed.
-          infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
-          });
-          var streetViewService = new google.maps.StreetViewService();
-          var radius = 50;
-          function getStreetView(data, status) {
-            if (status == google.maps.StreetViewStatus.OK) {
-              var nearStreetViewLocation = data.location.latLng;
-              var heading = google.maps.geometry.spherical.computeHeading(
-                nearStreetViewLocation, marker.position);
-                infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-                var panoramaOptions = {
-                  position: nearStreetViewLocation,
-                  pov: {
-                    heading: heading,
-                    pitch: 30
-                  }
-                };
-              var panorama = new google.maps.StreetViewPanorama(
-                document.getElementById('pano'), panoramaOptions);
-            } else {
-              infowindow.setContent('<div>' + marker.title + '</div>' +
-                '<div>No Street View Found</div>');
-            }
-          }
-          // Use streetview service to get the closest streetview image within
-          // 50 meters of the markers position
-          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-          // Open the infowindow on the correct marker.
-          infowindow.open(map, marker);
-          infowindow.addListener('closeclick', function() {
-            infowindow.close();
-            marker.setAnimation(null);
-          });
-        }
-      }
+function populateInfoWindow(marker, infoWindow) {
+    if (infoWindow.marker != marker) {
+        infoWindow.marker = marker;
+        infoWindow.open(map, marker);
+    } else {
+        infoWindow.setContent('<div>' + marker.title + '</div>' +
+            '<div>No Street View Found</div>');
+    }
+    // Make sure the marker property is cleared if the infowindow is closed.
+    infoWindow.addListener('closeclick', function() {
+        infoWindow.marker = null;
+    });
+    infoWindow.addListener('closeclick', function() {
+        infoWindow.close();
+        marker.setAnimation(null);
+    });
+}
+
 
 // This function takes in a COLOR, and then creates a new marker icon of that color.
 function makeMarkerIcon(markerColor) {

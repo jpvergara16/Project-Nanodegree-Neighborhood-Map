@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
+    <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()"></span>
+
+    <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
+
     <header>
         <h2 class="title">Orange County: Best All-You-Can-Eat Korean BBQ Locations</h2>
     </header>
@@ -15,11 +19,12 @@
     <section class="col-sm-3 content">
       <div id="text-content" data-bind="visible: !windowIsSmall() || !HideSect() ">
             <p>
-              A look at some of the best asian dining establishments around Orange County, California
+              A look at some of the best asian dining establishments around Orange County, California.
             </p>
 
             <div class="form-group">
                 <em>Filter by: </em>
+                 <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}" class="form-control"></select>
             </div>
 
             <ul data-bind="foreach: locations" class="loc-list">
