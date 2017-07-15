@@ -19,32 +19,32 @@ var ViewModel = function() {
       self.locations.push(new Location(location));
     });
 
-		self.tags = ko.observableArray(type); // available categories for filtering are displayed in UI drop down
+		self.tags = ko.observableArray(type); // type filtering is displayed in UI drop down
     self.selectedFilter = ko.observable('undefined'); // updated when user selects a new tag from the drop down
     self.selectedLocation = ko.observable(undefined); // updated when user clicks on a location
 
-
     // to detect when window is resized
     self.windowWidth = ko.observable(window.innerWidth);
-    // will be used to hide intro and filter section when browser is shrinked
-    // or page is loaded from a small device
-    self.isSectionHidden = ko.observable(self.windowWidth() < maxSectWidth);
+    // hides intro and filter section when browser is at certain size
+    self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
 
     // BEHAVIOUR
     self.onLocClick = function(location, caller) {
-        if (location === self.selectedLocation())
-            self.selectedLocation('undefined');
-        else
-            self.selectedLocation(location);
+        if (location === self.selectedLocation()) {
+          self.selectedLocation('undefined');
+        } else {
+          self.selectedLocation(location);
+				};
         // avoid circular reference
-        if (caller !== map)
-            map.onMarkerClick(location.mapMarker, location, viewModel);
+        if (caller !== map) {
+        	onMarkerClick(location.mapMarker, location, viewModel);
+				};
     };
 
 		self.onFilter = function(om) {
-		var filterTag = om.selectedFilter();
 		var markersToShow = [];
 		var markersToHide = [];
+		var filterTag = om.selectedFilter();
 		for (var i = 0; i < self.locations().length; i++) {
 				var currentLocation = self.locations()[i];
 				if (currentLocation.tags.includes(filterTag)) {
@@ -61,14 +61,14 @@ var ViewModel = function() {
 };
 
 		self.hideFilterSection = function() {
-			 self.isSectionHidden(true);
+		 self.hideSect(true);
 	 };
 
 	 self.showFilterSection = function() {
-			 self.isSectionHidden(false);
+		 self.hideSect(false);
 	 };
 
-    self.windowIsSmall = function() {
+    self.viewIsSmall = function() {
       return self.windowWidth() < maxSectWidth;
     };
 
@@ -78,7 +78,6 @@ var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
 
 window.onresize = function() {
-    // Idea from
-    // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+    // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
     viewModel.windowWidth(window.innerWidth);
 };

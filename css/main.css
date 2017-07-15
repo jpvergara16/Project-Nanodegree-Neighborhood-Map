@@ -1,4 +1,9 @@
 /* Style CSS */
+* {
+  border-color: black;
+  border-style: dotted;
+  border-width: thin;
+}
 
 html,
 body {
@@ -11,4 +16,85 @@ body {
   height: 100%;
 }
 
+li.selected {
+  background-color: #fed41c;
+}
+
+.content {
+  padding: 2em;
+}
+
+.loc-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+}
+
+.loc-list {
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+header {
+    color: #ddd;
+}
+
+.neighborhood {
+    color: #fed41c;
+}
+
+.glyphicon-align-justify,
+.glyphicon-remove {
+    font-size: 30px;
+    position: relative;
+    float: right;
+}
+
+.glyphicon-align-justify:hover,
+.glyphicon-remove:hover {
+    cursor: pointer;
+    opacity: .5;
+}
+
+.icon {
+    width: 90px;
+}
+
+.icons-set {
+    text-align: center;
+}
+
 /* Responsive CSS*/
+@media (min-width: 767px) {
+  .glyphicon-remove,
+  .glyphicon-align-justify {
+      display: none;
+  }
+}
+
+@media (max-width: 767px) {
+    .hide {
+        display: none;
+    }
+
+    header h4 {
+        margin-top: 0;
+    }
+
+    header h1 {
+        margin: 0;
+    }
+
+    section.content {
+        padding-bottom: 10px;
+    }
+
+    footer {
+        position: relative;
+        background-color: rgba(254,212,28,0); /* just make it transparent */
+        padding: 10px 0;
+        text-align: right;
+    }
+}

@@ -81,6 +81,7 @@ function initMap() {
 
 // Function populates infowindow when marker is clicked
 function populateInfoWindow(marker, infoWindow) {
+    var infoWindow = newInfoWindow;
     if (infoWindow.marker != marker) {
         infoWindow.marker = marker;
         infoWindow.open(map, marker);
@@ -90,10 +91,8 @@ function populateInfoWindow(marker, infoWindow) {
     }
     // Make sure the marker property is cleared if the infowindow is closed.
     infoWindow.addListener('closeclick', function() {
-        infoWindow.marker = null;
-    });
-    infoWindow.addListener('closeclick', function() {
-        infoWindow.close();
+        infowindow.marker = null;
+        infowindow.close();
         marker.setAnimation(null);
     });
 }
