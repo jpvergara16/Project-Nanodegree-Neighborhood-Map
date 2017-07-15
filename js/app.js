@@ -37,7 +37,7 @@ var ViewModel = function() {
 				};
         // avoid circular reference
         if (caller !== map) {
-        	onMarkerClick(location.mapMarker, location, viewModel);
+        	markerClicked(location.mapMarker, location, viewModel);
 				};
     };
 
