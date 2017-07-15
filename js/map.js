@@ -113,7 +113,6 @@ function initMap() {
   }
 }
 
-
 //Error handling function when google maps api fails to return
 function googleErrorHandler() {
 	$('#map-error').html(
