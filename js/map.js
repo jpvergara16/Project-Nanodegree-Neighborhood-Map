@@ -10,6 +10,7 @@ var map = {
       if (this.infoWindow.marker != marker) {
           this.infoWindow.marker = marker;
           this.infoWindow.open(map, marker);
+          map.infoWindow.setContent(html);
       } else {
           map.infoWindow.open(map, marker);
       }
@@ -20,15 +21,16 @@ var map = {
         // Quit the currently animated marker, if selected
         if (this.currentAnimatedMarker !== 'undefined') {
             this.currentAnimatedMarker.setAnimation(null);
-            // Stores a reference to this marker, to quit when a marker is clicked again
-            this.currentAnimatedMarker = marker;
         }
+        // Stores a reference to this marker, to quit when a marker is clicked again
+        this.currentAnimatedMarker = marker;
         // if clicked marker was already animated, quit it
         if (markerAnimation !== null) {
             marker.setAnimation(null);
             map.infoWindow.close();
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
+            this.populateInfoWindow(marker);
         }
         if (caller !== viewModel) {
             viewModel.onLocClick(location, map);
@@ -45,7 +47,7 @@ var map = {
         });
     }
   }
-}
+};
 
 // Initialize map on load
 function initMap() {
@@ -54,7 +56,6 @@ function initMap() {
     center: {lat: 33.745472, lng: -117.867653},
     zoom: 11,
     styles: mapStyles,
-    disableDefaultUI: true,
     mapTypeControl: false
   });
 

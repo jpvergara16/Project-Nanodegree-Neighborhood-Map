@@ -22,19 +22,21 @@
               A look at some of 2017's best asian BBQ dining around Orange County, California - ranging from the top 5 best matched establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Yelp.com !
             </p>
 
+            <!--Option to filter by type-->
             <div class="form-group">
                 <em>Filter by: </em>
                  <select data-bind="options: tags, value: selectedFilter, event: {change: onFilter}" class="form-control"></select>
             </div>
 
+            <!--Location Listing-->
             <ul data-bind="foreach: locations" class="loc-list">
                 <li data-bind="text: $data.title, visible: $data.visible,
                  click: $root.onLocClick" class="loc-item"></li>
             </ul>
         </div>
     </section>
-    <div id="map"></div>
     <div id="map-error" data-bind="visible: googleErrorHandler()"></div>
+    <div id="map"></div>
 
     <!-- Load JS lib/files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

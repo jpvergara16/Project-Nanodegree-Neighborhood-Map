@@ -34,27 +34,29 @@ var ViewModel = function() {
           self.selectedLocation('undefined');
         } else {
           self.selectedLocation(location);
-				};
+				}
         // avoid circular reference
         if (caller !== map) {
         	markerClicked(location.mapMarker, location, viewModel);
-				};
+				}
     };
 
 		self.onFilter = function(om) {
-		var markersToShow = [];
-		var markersToHide = [];
-		var filterTag = om.selectedFilter();
-		for (var i = 0; i < self.locations().length; i++) {
-				var currentLocation = self.locations()[i];
-				if (currentLocation.tags.includes(filterTag)) {
-						currentLocation.visible(true);
-						markersToShow.push(currentLocation.mapMarker);
-				} else {
-						currentLocation.visible(false);
-						markersToHide.push(currentLocation.mapMarker);
+			self.onFilter = function(om) {
+			var filterTag = om.selectedFilter();
+			var markersToShow = [];
+			var markersToHide = [];
+			for (var i = 0; i < self.locations().length; i++) {
+					var currentLocation = self.locations()[i];
+					if (currentLocation.tags.includes(filterTag)) {
+							currentLocation.visible(true);
+							markersToShow.push(currentLocation.mapMarker);
+					} else {
+							currentLocation.visible(false);
+							markersToHide.push(currentLocation.mapMarker);
+					}
 				}
-		}
+	    };
 
 		map.showMarkers(markersToShow);
 		map.hideMarkers(markersToHide);
