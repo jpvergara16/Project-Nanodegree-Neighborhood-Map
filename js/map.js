@@ -10,7 +10,6 @@ var map = {
       if (this.infoWindow.marker != marker) {
           this.infoWindow.marker = marker;
           this.infoWindow.open(map, marker);
-          map.infoWindow.setContent(html);
       } else {
           map.infoWindow.open(map, marker);
       }

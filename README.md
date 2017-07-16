@@ -2,7 +2,7 @@
 ```
 ```
 ## Project Description:
-- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing the 10 top rated All-You-Can-Eat Korean BBQ spots in Orange County.
+- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing at some of 2017's best asian BBQ dining around Orange County, California - ranging from the top 5 best matched establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Yelp.com.
 
 ## Project Criteria:
 - Develop a single-page application featuring a map of a particular neighborhood.
@@ -27,7 +27,7 @@ List of developers & links to their reference projects:
 ```
 ### Build tools/technologies (to be used)
 - Google Maps API
-- Google Street View API
+- Foursquare API
 - Grunt
 - Bootstrap JS framework
 - Knockout JS framework
