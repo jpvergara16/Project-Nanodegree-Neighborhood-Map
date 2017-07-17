@@ -31,7 +31,7 @@
             </div>
 
             <!--Location Listing-->
-            <ul data-bind="foreach: locations" class="loc-list">
+            <ul data-bind="foreach: locations" class="loc-list scroll-nav">
                 <li data-bind="text: $data.title, visible: $data.visible, css: { selected: $data == $root.selectedLocation()
                  click: $root.onLocClick" class="loc-item"></li>
             </ul>

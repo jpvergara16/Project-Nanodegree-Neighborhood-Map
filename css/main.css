@@ -1,9 +1,9 @@
 /* Style CSS */
-* {
+/* * {
   border-color: white;
   border-style: dotted;
   border-width: thin;
-}
+} */
 
 html, body {
   height: 100%;
@@ -14,6 +14,7 @@ html, body {
 body {
   margin: 0;
   padding: 0;
+  background-color: #24496E;
 }
 
 #map, #map-error {
@@ -27,7 +28,6 @@ li.selected {
 
 .content {
   padding: 2em;
-  background-color: #24496E;
 }
 
 .title {
@@ -55,12 +55,21 @@ li.selected {
     padding: 10px 10px;
     margin-bottom: -1px;
     text-align: center;
-    border: 1px solid #ddd;
 }
 
 .loc-list {
     padding-left: 0;
     margin-bottom: 20px;
+}
+
+.scroll-nav {
+  position: absolute;
+  top: 100;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 header {
@@ -89,6 +98,7 @@ header {
     text-align: center;
 }
 
+/* Modal & Button Style */
 .info-button, .modal-content{
   font-weight: bold;
   color: black;
