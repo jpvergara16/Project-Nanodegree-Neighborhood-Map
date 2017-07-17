@@ -1,16 +1,19 @@
 /* Style CSS */
-/* * {
+* {
   border-color: white;
   border-style: dotted;
   border-width: thin;
-}*/
+}
 
-html,
-body {
+html, body {
   height: 100%;
+  width: 100%;
+  font-family: fantasy;
+}
+
+body {
   margin: 0;
   padding: 0;
-  font-family: fantasy;
 }
 
 #map, #map-error {
@@ -34,15 +37,16 @@ li.selected {
   padding: 10px;
 }
 
-#text-content, #description {
+.form-group, .loc-list{
   font-weight: bold;
-  position: relative;
   color: white;
   margin: auto;
+  padding: 10px;
 }
 
-.form-group {
-  padding: 8px;
+#description {
+  color: black;
+  font-weight: bold;
 }
 
 .loc-item {
@@ -61,6 +65,7 @@ li.selected {
 
 header {
   background-color: black;
+  border: 3px solid #ddd;
 }
 
 .glyphicon-align-justify,
@@ -82,6 +87,27 @@ header {
 
 .icons-set {
     text-align: center;
+}
+
+.info-button, .modal-content{
+  font-weight: bold;
+  color: black;
+  background color:inherit;
+  margin: 8px;
+  padding: 7px;
+  text-align: center;
+}
+
+.info-app-button {
+  padding: 5px;
+  border: 2px solid black;
+}
+
+.info-app-button:hover{
+  padding: 5px;
+  color:white;
+  background-color: black;
+  border: 2px solid white;
 }
 
 /* Responsive CSS*/
@@ -108,4 +134,5 @@ header {
     section.content {
         padding-bottom: 10px;
     }
+
 }

@@ -3,6 +3,7 @@
 var Location = function(data) {
 	var self = this;
 	self.title = data.title;
+	self.tags = data.type;
 	self.location = data.location;
 	self.mapMarker = null; // mapMarker will be updated when map markers are created
 	self.visible = ko.observable(true); // this property will allow to filter the list of locations in UI
@@ -41,7 +42,6 @@ var ViewModel = function() {
 				}
     };
 
-		self.onFilter = function(om) {
 			self.onFilter = function(om) {
 			var filterTag = om.selectedFilter();
 			var markersToShow = [];
@@ -56,11 +56,9 @@ var ViewModel = function() {
 							markersToHide.push(currentLocation.mapMarker);
 					}
 				}
+				map.showMarkers(markersToShow);
+				map.hideMarkers(markersToHide);
 	    };
-
-		map.showMarkers(markersToShow);
-		map.hideMarkers(markersToHide);
-};
 
 		self.hideFilterSection = function() {
 		 self.hideSect(true);

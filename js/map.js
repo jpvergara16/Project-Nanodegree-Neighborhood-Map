@@ -52,7 +52,7 @@ var map = {
 function initMap() {
   // Constructor creates a new map
   map.chart = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 33.745472, lng: -117.867653},
+    center: {lat: 33.7455, lng: -117.8677},
     zoom: 11,
     styles: mapStyles,
     mapTypeControl: false
@@ -99,7 +99,6 @@ function initMap() {
       title: loc.title,
       icon: defaultIcon,
     });
-
     mark.setAnimation(null);
     loc.mapMarker = mark;
     mark.addListener('click', addMarkerClicklistener(mark, loc));

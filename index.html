@@ -6,22 +6,24 @@
     <title>Orange County Map: Best All-You-Can-Eat Korean BBQ Locations</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css" type="text/css">
+    <meta name="author" content="Julius Vergara">
   </head>
   <body>
     <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
 
     <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
 
-    <header>
-        <h2 class="title">Orange County: The Best Asian BBQ Spots!</h2>
-    </header>
-
     <section class="col-sm-3 content">
-      <div id="text-content" data-bind="visible: !viewIsSmall() || !hideSect() ">
-            <p id="description">
-              A look at some of 2017's best asian BBQ dining around Orange County, California - ranging from the top 5 best matched establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Yelp.com !
-            </p>
 
+      <header>
+          <h2 class="title">Orange County: The Best Asian BBQ Spots!</h2>
+      </header>
+
+      <div id="text-content" data-bind="visible: !viewIsSmall() || !hideSect() ">
+        <div class="info-button">
+          <button class="info-app-button" data-toggle="modal" data-target="#myModal">Info about Application
+          </button>
+        </div>
             <!--Option to filter by type-->
             <div class="form-group">
                 <em>Filter by: </em>
@@ -30,11 +32,25 @@
 
             <!--Location Listing-->
             <ul data-bind="foreach: locations" class="loc-list">
-                <li data-bind="text: $data.title, visible: $data.visible,
+                <li data-bind="text: $data.title, visible: $data.visible, css: { selected: $data == $root.selectedLocation()
                  click: $root.onLocClick" class="loc-item"></li>
             </ul>
         </div>
     </section>
+
+    <!-- Description Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <span data-dismiss="modal" class="close">x</span>
+                <p id="description">
+                  A look at some of 2017's best asian BBQ dining around Orange County, California - <br> ranging from the top 5 best matched establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Yelp.com !
+                </p>
+        </div>
+    </div>
+  </div>
+</div>
+
     <div id="map-error" data-bind="visible: googleErrorHandler()"></div>
     <div id="map"></div>
 

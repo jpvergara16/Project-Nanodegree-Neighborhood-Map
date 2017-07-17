@@ -1,5 +1,5 @@
 /* ====== MODEL ======= */
-// LatLng locations for restaurants
+// type of restaurant
 var type = [
   'All Restaurants', //0
   'All-You-Can-Eat (AYCE)', //1
@@ -11,7 +11,7 @@ var type = [
   'Filipino', //7
   'Vietnamese', //8
 ];
-
+// LatLng locations for restaurants
 var resLocations = [
   {
       title: 'Cham Sut Gol',
@@ -78,10 +78,10 @@ var resLocations = [
       tags: [type[0], type[1], type[5]],
   },
   {
-      title: 'Yakiyan',
+      title: 'Gyu-Kaku Japanese BBQ',
       location: {
-          lat: 33.990500,
-          lng: -117.932355
+          lat: 33.715106,
+          lng: -117.990522
       },
       tags: [type[0], type[3], type[5]],
   },
@@ -118,10 +118,10 @@ var resLocations = [
       tags: [type[0], type[3], type[6]],
   },
   {
-      title: 'Leung Kee',
+      title: 'Lucky Chinese Food',
       location: {
-          lat: 33.995297,
-          lng: -117.890434
+          lat: 33.693630,
+          lng: -117.954736
       },
       tags: [type[0], type[2], type[6]],
   },
