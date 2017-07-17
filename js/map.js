@@ -6,12 +6,17 @@ var map = {
   //Declare initial marker animation
   currentAnimatedMarker: 'undefined',
   // Function populates infowindow when marker is clicked
-  populateInfoWindow: function(marker) {
+  populateInfoWindow: function(marker, locationID) {
       if (this.infoWindow.marker != marker) {
           this.infoWindow.marker = marker;
+          this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>');
           this.infoWindow.open(map, marker);
+          fourSqr.setVenueContent(locationID, marker.title, function(html) {
+              map.infoWindow.setContent(html);
+              map.infoWindow.open(map, marker);
+          });
       } else {
-          map.infoWindow.open(map, marker);
+          map.infoWindow.open(map, marker); // avoids info request from Foursquare
       }
   },
 
@@ -21,7 +26,7 @@ var map = {
         if (this.currentAnimatedMarker !== 'undefined') {
             this.currentAnimatedMarker.setAnimation(null);
         }
-        // Stores a reference to this marker, to quit when a marker is clicked again
+        // Stores a reference to this marker to quit when a marker is clicked again
         this.currentAnimatedMarker = marker;
         // if clicked marker was already animated, quit it
         if (markerAnimation !== null) {
@@ -29,7 +34,7 @@ var map = {
             map.infoWindow.close();
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
-            this.populateInfoWindow(marker);
+            this.populateInfoWindow(marker, location.fourSqrID);
         }
         if (caller !== viewModel) {
             viewModel.onLocClick(location, map);
@@ -58,7 +63,7 @@ function initMap() {
     mapTypeControl: false
   });
 
-  //Declare info window when map initializes
+  //Declare infowindow when map initializes
   map.infoWindow = new google.maps.InfoWindow();
   map.infoWindow.addListener('closeclick', function() {
         // Stop its marker's animation

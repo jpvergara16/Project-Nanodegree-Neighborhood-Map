@@ -6,6 +6,7 @@ var Location = function(data) {
 	self.tags = data.type;
 	self.location = data.location;
 	self.mapMarker = null; // mapMarker will be updated when map markers are created
+	self.fourSqrID = data.fourSqrID;
 	self.visible = ko.observable(true); // this property will allow to filter the list of locations in UI
 	return self;
 };
@@ -13,7 +14,6 @@ var Location = function(data) {
 var ViewModel = function() {
     var maxSectWidth = 767;
     var self = this;
-
     self.locations = new ko.observableArray([]);
 
     resLocations.forEach(function(location) {
@@ -29,7 +29,7 @@ var ViewModel = function() {
     // hides intro and filter section when browser is at certain size
     self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
 
-    // BEHAVIOUR
+    // BEHAVIOR
     self.onLocClick = function(location, caller) {
         if (location === self.selectedLocation()) {
           self.selectedLocation('undefined');
@@ -42,31 +42,32 @@ var ViewModel = function() {
 				}
     };
 
-			self.onFilter = function(om) {
-			var filterTag = om.selectedFilter();
-			var markersToShow = [];
-			var markersToHide = [];
-			for (var i = 0; i < self.locations().length; i++) {
-					var currentLocation = self.locations()[i];
-					if (currentLocation.tags.includes(filterTag)) {
-							currentLocation.visible(true);
-							markersToShow.push(currentLocation.mapMarker);
-					} else {
-							currentLocation.visible(false);
-							markersToHide.push(currentLocation.mapMarker);
-					}
+		self.onFilter = function(vm) {
+		var filterTag = vm.selectedFilter();
+		var markersToShow = [];
+		var markersToHide = [];
+		for (var i = 0; i < self.locations().length; i++) {
+				var currentLocation = self.locations()[i];
+				if (currentLocation.tags.includes(filterTag)) {
+						currentLocation.visible(true);
+						markersToShow.push(currentLocation.mapMarker);
+				} else {
+						currentLocation.visible(false);
+						markersToHide.push(currentLocation.mapMarker);
 				}
-				map.showMarkers(markersToShow);
-				map.hideMarkers(markersToHide);
-	    };
+			}
+			map.showMarkers(markersToShow);
+			map.hideMarkers(markersToHide);
+    };
 
+		//filters selection when called
 		self.hideFilterSection = function() {
 		 self.hideSect(true);
-	 };
+	 	};
 
-	 self.showFilterSection = function() {
+	 	self.showFilterSection = function() {
 		 self.hideSect(false);
-	 };
+	 	};
 
     self.viewIsSmall = function() {
       return self.windowWidth() < maxSectWidth;

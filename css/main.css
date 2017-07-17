@@ -1,9 +1,9 @@
 /* Style CSS */
-/* * {
+/** { //grid styling to check layout
   border-color: white;
   border-style: dotted;
   border-width: thin;
-} */
+}*/
 
 html, body {
   height: 100%;
@@ -21,13 +21,8 @@ body {
   height: 100%;
 }
 
-li.selected {
-  background-color: #CCDBE8;
-  color:black;
-}
-
 .content {
-  padding: 2em;
+  padding: 1em;
 }
 
 .title {
@@ -37,29 +32,30 @@ li.selected {
   padding: 10px;
 }
 
-.form-group, .loc-list{
+.form-group{
   font-weight: bold;
   color: white;
   margin: auto;
   padding: 10px;
 }
 
+.loc-list{
+  color: white;
+  margin: auto;
+}
+
 #description {
   color: black;
   font-weight: bold;
+  font-size: 1em;
+  padding: 10px;
 }
 
 .loc-item {
     position: relative;
     display: block;
     padding: 10px 10px;
-    margin-bottom: -1px;
     text-align: center;
-}
-
-.loc-list {
-    padding-left: 0;
-    margin-bottom: 20px;
 }
 
 .scroll-nav {
@@ -96,6 +92,16 @@ header {
 
 .icons-set {
     text-align: center;
+}
+
+li:hover {
+  background-color: #CCDBE8;
+  color:black;
+}
+
+li.selected{
+  color:white;
+  background-color: black;
 }
 
 /* Modal & Button Style */
