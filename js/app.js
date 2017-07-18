@@ -4,13 +4,12 @@ $(document).ready(function() {
 // Global variables
   var self = this;
   var map, infoWindow;
-
 // Array to hold all location info
   var resLocations = [];
 
 /* ====== VIEWMODEL ======= */
   var ViewModel = function() {
-
+    var maxSectWidth = 767;
     var self = this;
 
     var infoWindow = new google.maps.InfoWindow();
@@ -42,6 +41,26 @@ $(document).ready(function() {
       populateInfoWindow(marker, infoWindow);
     };
 
+    // to detect when window is resized
+    self.windowWidth = ko.observable(window.innerWidth);
+    // hides intro section when browser is at certain size
+    self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
+    self.hideFilterSection = function() {
+     self.hideSect(true);
+    };
+
+    self.showFilterSection = function() {
+       self.hideSect(false);
+    };
+
+    self.viewIsSmall = function() {
+       return self.windowWidth() < maxSectWidth;
+    };
+
+    window.onresize = function() {
+    // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+    viewModel.windowWidth(window.innerWidth);
+};
   };
 
 
@@ -167,7 +186,7 @@ $(document).ready(function() {
         map: map,
         animation: google.maps.Animation.DROP,
         icon: defaultIcon,
-        content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><p style="font-weight: bold;">' + rating + '/10 Rating</p><a href="tel:"' + phone + '">' + phone + '</a>'
+        content: '<h2 style="margin-bottom: 0;text-decoration: underline">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><p style="font-weight: bold;">' + rating + '/10 Rating</p><a href="tel:"' + phone + '">' + phone + '</a>'
       });
       bounds.extend(resLocations[i].position);
       markers.push(marker);
@@ -313,6 +332,6 @@ $(document).ready(function() {
         ]
     }
 ];
-
-  ko.applyBindings(new ViewModel());
+  var viewModel = new ViewModel();
+  ko.applyBindings(viewModel);
 });

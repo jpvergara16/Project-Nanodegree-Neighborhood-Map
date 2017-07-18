@@ -1,3 +1,4 @@
+/* Style CSS */
 html,
 body {
     height: 100%;
@@ -11,7 +12,6 @@ body {
 }
 
 #map {
-    width: 70%;
     height: 100%;
     color: #2d4758
 }
@@ -46,10 +46,8 @@ a {
   font-style: oblique;
 }
 
-.container {
-    float: left;
+.content {
     height: 100%;
-    width: 30% !important;
     background: black;
     color: #fff
 }
@@ -93,4 +91,60 @@ li {
 li:hover {
     background: #2d4758;
     color: #fff
+}
+
+.glyphicon-align-justify,
+.glyphicon-remove {
+    font-size: 30px;
+    position: relative;
+    margin: auto;
+    padding: 15px 15px 0 0;
+    float: right;
+    color: white;
+}
+
+.glyphicon-align-justify:hover,
+.glyphicon-remove:hover {
+    cursor: pointer;
+    opacity: .5;
+}
+
+/* Responsive CSS */
+@media (min-width: 767px) {
+  .glyphicon-remove,
+  .glyphicon-align-justify {
+      display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    float: none;
+    width: 100%;
+  }
+
+  #map {
+    position:relative;
+    width: 100%;
+  }
+
+  .hide {
+      display: none;
+  }
+
+  header h4 {
+      margin-top: 0;
+  }
+
+  header h1 {
+      margin: 0;
+  }
+
+  section.content {
+      padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+
 }

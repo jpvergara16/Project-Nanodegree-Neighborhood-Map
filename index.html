@@ -17,32 +17,33 @@
   </head>
 
   <body>
+    <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
 
-    <div class='container'>
+    <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
+    <div class='col-sm-3 content'>
         <div class='header'>
-          <h1>Best of - Irvine, CA</h1>
-          <h3>Asian Cuisine!</h3>
+          <h1>Best of Irvine<br>Asian Cuisine!</h1>
         </div>
 
         <p id="description">
-          A look at some of 2017's best asian dining around Irvine, California - <br> ranging from the top rated establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Foursquare.com !
+          A look at some of 2017's best asian dining around Irvine, California - <br> ranging from the top rated establishments on Foursquare.com !
         </p>
-        <!-- Knockout data-bind food seleciton -->
-        <select data-bind='options: food,
-                           optionsCaption: "Choose a food type!",
-                           value: foodSelect'>
-        </select>
-        <input type='text' placeholder='Type here to filter locations!' data-bind="textInput: filter">
-        <!-- Go through our filtered venues observable array and list data -->
-        <div class='map-options'>
-          <ul class='options' data-bind="foreach: filteredVenues">
-            <li data-bind="click: $parent.populateInfoFromItem">
-              <span data-bind='text: name'></span>
-            </li>
-          </ul>
-        </div>
+          <!-- Knockout data-bind food seleciton -->
+          <select data-bind='options: food,
+                             optionsCaption: "Choose a food type!",
+                             value: foodSelect'>
+          </select>
+          <input type='text' placeholder='Type here to filter locations!' data-bind="textInput: filter">
+          <!-- Go through our filtered venues observable array and list data -->
+          <div class='map-options'>
+            <ul class='options' data-bind="foreach: filteredVenues">
+              <li data-bind="click: $parent.populateInfoFromItem">
+                <span data-bind='text: name'></span>
+              </li>
+            </ul>
+          </div>
       </div>
 
-    <div id="map"></div>
+    <div id="map" class="col-sm-9"></div>
   </body>
 </html>
