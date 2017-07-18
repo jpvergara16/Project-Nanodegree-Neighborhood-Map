@@ -1,3 +1,5 @@
+var app = app || {};
+
 //Initiates data binding & map when page loads
 $(document).ready(function() {
     /* ====== MODEL ======= */
@@ -148,7 +150,7 @@ $(document).ready(function() {
     };
 
     // intialize markers on load and extend bounds
-    function initMap(init, markers, infoWindow) {
+    app.initMap = function(init, markers, infoWindow) {
         if (init) {
             buildMap();
         }
