@@ -1,4 +1,5 @@
 /* ====== GOOGLEMAPS ======= */
+/*
 //Declare map variable
 var map = {
   chart: null, // this will hold the map from Google
@@ -11,10 +12,6 @@ var map = {
           this.infoWindow.marker = marker;
           this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>');
           this.infoWindow.open(map, marker);
-          fourSqr.setVenueContent(locationID, marker.title, function(html) {
-              map.infoWindow.setContent(html);
-              map.infoWindow.open(map, marker);
-          });
       } else {
           map.infoWindow.open(map, marker); // avoids info request from Foursquare
       }
@@ -76,22 +73,6 @@ function initMap() {
      };
   };
 
-  // Marker styles - this function takes in a COLOR, and then creates a new marker icon of that color.
-  function makeMarkerIcon(markerColor) {
-      var markerImage = new google.maps.MarkerImage(
-        'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-        '|40|_|%E2%80%A2',
-        new google.maps.Size(21, 34),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(10, 34),
-        new google.maps.Size(21,34));
-      return markerImage;
-  }
-
-  //Styling for markers, one for default, one for user mouse over.
-  var defaultIcon = makeMarkerIcon('2F5F8F');
-  var highlightedIcon = makeMarkerIcon('F0F5C3');
-
   // Loop through location array to create marker array on intialize
   var locations = viewModel.locations();
   for (var i = 0; i < locations.length; i++) {
@@ -116,7 +97,89 @@ function initMap() {
     });
   }
 }
+*/
+// Build our map in the view
+var buildMap = function() {
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 11,
+      center: new google.maps.LatLng(33.7455, -117.8677),
+      styles: mapStyles,
+      mapTypeControl: false
+    });
+};
 
+//  Set  up our map markers and extend bounds
+function initMap(init, markers, infoWindow) {
+  if (init) {
+    buildMap();
+  }
+
+// Set our markers to null each time choice is made to clear markers
+  for (var m = 0; m < markers().length; m++) {
+      markers()[m].setMap(null);
+  }
+
+// Variables to create styled markers and extend map bounds
+  var bounds = new google.maps.LatLngBounds();
+  // Marker styles - this function takes in a COLOR, and then creates a new marker icon of that color.
+  function makeMarkerIcon(markerColor) {
+  var markerImage = new google.maps.MarkerImage(
+  'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+  '|40|_|%E2%80%A2',
+  new google.maps.Size(21, 34),
+  new google.maps.Point(0, 0),
+  new google.maps.Point(10, 34),
+  new google.maps.Size(21,34));
+  return markerImage;
+}
+
+  //Styling for markers, one for default, one for user mouse over.
+  var defaultIcon = makeMarkerIcon('2F5F8F');
+  var highlightedIcon = makeMarkerIcon('F0F5C3');
+
+// Loop through the model and set Marker properties and info window content
+  for (var i = 0; i < Model.length; i++) {
+    var latlng = Model[i].position;
+    var name = Model[i].name;
+    var address = Model[i].address;
+    var phone = Model[i].phone;
+    var rating = Model[i].rating;
+    var marker = new google.maps.Marker({
+      title: name,
+      position: latlng,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      icon: defaultIcon,
+      content: '<h2 style="margin-bottom: 0;">' + name + '</h2><h4>' + address[0] + '</br>' + address[1] + '</br>' + address[2] + '</h4><p style="font-weight: bold;">' + rating + '/10 Rating</p><a href="tel:"' + phone + '">' + phone + '</a>'
+    });
+    bounds.extend(Model[i].position);
+    markers.push(marker);
+    // Add event listeners for when markers are either clicked or focused on
+      marker.addListener('click', function() {
+        populateInfoWindow(this, infoWindow);
+      });
+      marker.addListener('mouseover', function() {
+        this.setIcon(highlightedIcon);
+      });
+      marker.addListener('mouseout', function() {
+        this.setIcon(defaultIcon);
+      });
+    map.fitBounds(bounds);
+  }
+}
+
+// Function populates the infowindow for when a marker on the map is interacted
+function populateInfoWindow(marker, infowindow) {
+  infowindow.marker = null;
+  if (infowindow.marker != marker) {
+    infowindow.marker = marker;
+    infowindow.setContent(marker.content);
+    infowindow.open(map, marker);
+    infowindow.addListener('closeclick', function() {
+      infowindow.marker = null;
+    });
+  }
+}
 //Error handling function when google maps api fails to return
 function googleErrorHandler() {
 	$('#map-error').html(
@@ -240,3 +303,4 @@ var mapStyles = [
     }
 ];
 
+ko.applyBindings(viewModel);

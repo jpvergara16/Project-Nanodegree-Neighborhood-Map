@@ -1,9 +1,9 @@
 /* Style CSS */
-/** { //grid styling to check layout
+*{ /*grid styling to check layout*/
   border-color: white;
   border-style: dotted;
   border-width: thin;
-}*/
+}
 
 html, body {
   height: 100%;
@@ -12,8 +12,6 @@ html, body {
 }
 
 body {
-  margin: 0;
-  padding: 0;
   background-color: #24496E;
 }
 
@@ -25,11 +23,13 @@ body {
   padding: 1em;
 }
 
-.title {
+.map-name {
   position: relative;
   color: white;
   margin: auto;
   padding: 10px;
+  background-color: black;
+  border: 3px solid #ddd;
 }
 
 .form-group{
@@ -41,7 +41,6 @@ body {
 
 .loc-list{
   color: white;
-  margin: auto;
 }
 
 #description {
@@ -52,9 +51,8 @@ body {
 }
 
 .loc-item {
-    position: relative;
     display: block;
-    padding: 10px 10px;
+    padding: 10px;
     text-align: center;
 }
 
@@ -69,15 +67,16 @@ body {
 }
 
 header {
-  background-color: black;
-  border: 3px solid #ddd;
+  display: inline-flex;
 }
 
 .glyphicon-align-justify,
 .glyphicon-remove {
     font-size: 30px;
+    color: white;
     position: relative;
     float: right;
+    padding: 8px;
 }
 
 .glyphicon-align-justify:hover,
@@ -105,6 +104,10 @@ li.selected{
 }
 
 /* Modal & Button Style */
+#myModal {
+  top:25%;
+}
+
 .info-button, .modal-content{
   font-weight: bold;
   color: black;
