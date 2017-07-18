@@ -1,157 +1,96 @@
-/* Style CSS */
-*{ /*grid styling to check layout*/
-  border-color: white;
-  border-style: dotted;
-  border-width: thin;
-}
-
-html, body {
-  height: 100%;
-  width: 100%;
-  font-family: fantasy;
-}
-
+html,
 body {
-  background-color: #24496E;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: fantasy;
+}
+::-webkit-scrollbar {
+    display: none;
+    visibility: hidden
 }
 
-#map, #map-error {
-  height: 100%;
+#map {
+    width: 70%;
+    height: 100%;
+    color: #2d4758
 }
 
-.content {
-  padding: 1em;
+h1 {
+    font-family: sans-serif;
+    margin: 15px;
 }
 
-.map-name {
-  position: relative;
-  color: white;
-  margin: auto;
-  padding: 10px;
-  background-color: black;
-  border: 3px solid #ddd;
+h2 {
+    font-size: 25px
 }
 
-.form-group{
-  font-weight: bold;
-  color: white;
-  margin: auto;
-  padding: 10px;
+h3 {
+    margin: 10px;
 }
 
-.loc-list{
-  color: white;
+h4 {
+    font-size: 18px;
+    color: #3c5f75
+}
+
+a {
+    color: #3c5f75;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px
 }
 
 #description {
-  color: black;
-  font-weight: bold;
-  font-size: 1em;
-  padding: 10px;
+  font-size: 15px;
+  font-style: oblique;
 }
 
-.loc-item {
-    display: block;
+.container {
+    float: left;
+    height: 100%;
+    width: 30% !important;
+    background: black;
+    color: #fff
+}
+
+select {
+    width: 100%;
     padding: 10px;
-    text-align: center;
+    margin-top: 15px;
+    color: #2d4758
+}
+select option {
+    padding: 10px
 }
 
-.scroll-nav {
-  position: absolute;
-  top: 100;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  overflow-y: auto;
-  max-height: 100%;
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    color: #2d4758
 }
 
-header {
-  display: inline-flex;
+.map-options {
+    margin-top: 15px;
+    height: 50%;
+    overflow: scroll
 }
 
-.glyphicon-align-justify,
-.glyphicon-remove {
-    font-size: 30px;
-    color: white;
-    position: relative;
-    float: right;
-    padding: 8px;
+.options {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #2d4758
 }
 
-.glyphicon-align-justify:hover,
-.glyphicon-remove:hover {
-    cursor: pointer;
-    opacity: .5;
-}
-
-.icon {
-    width: 90px;
-}
-
-.icons-set {
-    text-align: center;
+li {
+    list-style: none;
+    padding: 10px;
+    cursor: pointer
 }
 
 li:hover {
-  background-color: #CCDBE8;
-  color:black;
-}
-
-li.selected{
-  color:white;
-  background-color: black;
-}
-
-/* Modal & Button Style */
-#myModal {
-  top:25%;
-}
-
-.info-button, .modal-content{
-  font-weight: bold;
-  color: black;
-  background color:inherit;
-  margin: 8px;
-  padding: 7px;
-  text-align: center;
-}
-
-.info-app-button {
-  padding: 5px;
-  border: 2px solid black;
-}
-
-.info-app-button:hover{
-  padding: 5px;
-  color:white;
-  background-color: black;
-  border: 2px solid white;
-}
-
-/* Responsive CSS*/
-@media (min-width: 767px) {
-  .glyphicon-remove,
-  .glyphicon-align-justify {
-      display: none;
-  }
-}
-
-@media (max-width: 767px) {
-    .hide {
-        display: none;
-    }
-
-    header h4 {
-        margin-top: 0;
-    }
-
-    header h1 {
-        margin: 0;
-    }
-
-    section.content {
-        padding-bottom: 10px;
-    }
-
+    background: #2d4758;
+    color: #fff
 }

@@ -4,62 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Julius Vergara">
-    <title>Best of Irvine: Asian Locations</title>
+    <title>Best of Irvine: Asian Cuisine</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css" type="text/css">
 
     <!-- Load JS lib/files early for performance purposes -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="js/lib/knockout-3.4.2.min.js"></script>
-    <script src="js/lib/bootstrap-3.3.7.min.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/map.js"></script>
     <script async defer  src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3" onerror="googleErrorHandler()"> </script>
+    <script src="js/lib/knockout-3.4.2.min.js"></script>
   </head>
+
   <body>
-    <section class="col-sm-3 content">
-      <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
 
-      <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() && viewIsSmall()"></span>
-
-      <header>
-          <h2 class="map-name">Best of Irvine: Asian Cuisine!</h2>
-      </header>
-
-      <div id="text-content" data-bind="visible: !viewIsSmall() || !hideSect() ">
-        <div class="info-button">
-          <button class="info-app-button" data-toggle="modal" data-target="#myModal"> - Click for Info -
-          </button>
+    <div class='container'>
+        <div class='header'>
+          <h1>Best of - Irvine, CA</h1>
+          <h3>Asian Cuisine!</h3>
         </div>
-            <!--Option to filter by type-->
-            <div class="form-group">
-                <em>Filter by: </em>
-                 <select data-bind="options: tags, value: selectedFilter, event:{change: onFilter}" class="form-control"></select>
-            </div>
-            <!--Location Listing-->
-            <div>
-              <ul data-bind="foreach: locations" class="loc-list scroll-nav">
-                <li data-bind="text: $data.title, visible: $data.visible, css: {selected: $data == $root.selectedLocation()}
-                click: $root.onLocClick" class="loc-item"></li>
-              </ul>
-            </div>
+
+        <p id="description">
+          A look at some of 2017's best asian dining around Irvine, California - <br> ranging from the top rated establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Foursquare.com !
+        </p>
+        <!-- Knockout data-bind food seleciton -->
+        <select data-bind='options: food,
+                           optionsCaption: "Choose a food type!",
+                           value: foodSelect'>
+        </select>
+        <input type='text' placeholder='Type here to filter locations!' data-bind="textInput: filter">
+        <!-- Go through our filtered venues observable array and list data -->
+        <div class='map-options'>
+          <ul class='options' data-bind="foreach: filteredVenues">
+            <li data-bind="click: $parent.populateInfoFromItem">
+              <span data-bind='text: name'></span>
+            </li>
+          </ul>
         </div>
-    </section>
-
-    <div id="map-error" data-bind="visible: googleErrorHandler()"></div>
-    <div id="map" class="col-sm-9 map-content"></div>
-
-    <!-- Description Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-                  <span data-dismiss="modal" class="close">x</span>
-                  <p id="description">
-                    This map application takes a look at some of 2017's best asian dining around Irvine, California - <br> ranging from the top rated establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Foursquare!
-                  </p>
-          </div>
       </div>
-    </div>
+
+    <div id="map"></div>
   </body>
 </html>
