@@ -1,4 +1,5 @@
 /* Style CSS */
+
 html,
 body {
     height: 100%;
@@ -44,9 +45,9 @@ a {
 }
 
 #description {
-  font-size: 15px;
-  font-style: oblique;
-  text-align: center;
+    font-size: 15px;
+    font-style: oblique;
+    text-align: center;
 }
 
 .content {
@@ -56,8 +57,8 @@ a {
 }
 
 header {
-  text-align:center;
-  font-style: oblique;
+    text-align: center;
+    font-style: oblique;
 }
 
 select {
@@ -119,38 +120,36 @@ li:hover {
 }
 
 /* Responsive CSS */
-@media (min-width: 767px) {
-  .glyphicon-remove,
-  .glyphicon-align-justify {
-      display: none;
-  }
 
-  .content {
-    height: 100%;
-  }
+@media (min-width: 767px) {
+    .glyphicon-remove,
+    .glyphicon-align-justify {
+        display: none;
+    }
+    .content {
+        height: 100%;
+    }
 }
 
 @media (max-width: 767px) {
-  #map {
-    position:relative;
-    width: 100%;
-  }
-
-  .hide {
-      display: none;
-  }
-
-  header h4 {
-      margin-top: 0;
-  }
-
-  header h1 {
-      margin: 0;
-  }
+    #map {
+        position: relative;
+        width: 100%;
+    }
+    .hide {
+        display: none;
+    }
+    header h4 {
+        margin-top: 0;
+    }
+    header h1 {
+        margin: 0;
+    }
 }
 
 @media (max-width: 360px) {
-  header, #description {
-    text-align: left;
-  }
+    header,
+    #description {
+        text-align: left;
+    }
 }

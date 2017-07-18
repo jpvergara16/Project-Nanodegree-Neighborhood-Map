@@ -2,14 +2,13 @@
 ```
 ```
 ## Project Description:
-- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best asian cuisine around Irvine, California - ranging from the top 5 best matched establishments among Korean, Chinese, Japanese, Vietnamese and Filipino restaurants on Foursquare.
+- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best asian cuisine around Irvine, California - ranging from the top rated establishments among Korean, Chinese, Japanese, Vietnamese, Filipino and Mongolian restaurants on Foursquare.
 
 ## Project Criteria:
 - Develop a single-page application featuring a map of a particular neighborhood.
 - Add additional functionality to this application, including: map markers to identify popular locations or places to visit, a search function to easily discover these locations, and a list-view to support simple browsing of all locations.
 - Research and implement third-party APIs that provide additional information about each of these locations (such as StreetView images, Wikipedia articles, Yelp reviews, etc).
 
-### Live Version: Click [here](https://jpvergara16.github.io/Project-Nanodegree-Neighborhood-Map/)
 ```
 ```
 ## Intro
@@ -33,7 +32,8 @@ List of developers & links to their reference projects:
 - [Snazzymaps - Mapbox Clean Theme](https://snazzymaps.com/style/119/mapbox-clean)
 ```
 ```
-### Instructions on how to run (to be continued)
+### Instructions on how to run
+To see the application running, go to [live version](https://jpvergara16.github.io/Project-Nanodegree-Neighborhood-Map/) or download it from this Github repository and load the index.html into your browser.
 
 ### License
 
