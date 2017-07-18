@@ -6,6 +6,7 @@ body {
     padding: 0;
     font-family: fantasy;
 }
+
 ::-webkit-scrollbar {
     display: none;
     visibility: hidden
@@ -19,6 +20,7 @@ body {
 h1 {
     font-family: sans-serif;
     margin: 15px;
+    padding-top: 15px;
 }
 
 h2 {
@@ -44,20 +46,27 @@ a {
 #description {
   font-size: 15px;
   font-style: oblique;
+  text-align: center;
 }
 
 .content {
-    height: 100%;
-    background: black;
-    color: #fff
+    background: #2F5F8F;
+    color: #FCF6DD;
+    padding: 12px;
+}
+
+header {
+  text-align:center;
+  font-style: oblique;
 }
 
 select {
     width: 100%;
     padding: 10px;
     margin-top: 15px;
-    color: #2d4758
+    color: #2F5F8F
 }
+
 select option {
     padding: 10px
 }
@@ -66,20 +75,20 @@ input {
     width: 100%;
     padding: 10px;
     margin-top: 15px;
-    color: #2d4758
+    color: #2F5F8F
 }
 
 .map-options {
     margin-top: 15px;
     height: 50%;
-    overflow: scroll
+    overflow: scroll;
 }
 
 .options {
     margin: 0;
     padding: 0;
     background: #fff;
-    color: #2d4758
+    color: #2F5F8F
 }
 
 li {
@@ -89,8 +98,8 @@ li {
 }
 
 li:hover {
-    background: #2d4758;
-    color: #fff
+    background: #2F5F8F;
+    color: #B5DBF2
 }
 
 .glyphicon-align-justify,
@@ -100,7 +109,7 @@ li:hover {
     margin: auto;
     padding: 15px 15px 0 0;
     float: right;
-    color: white;
+    color: #B5DBF2;
 }
 
 .glyphicon-align-justify:hover,
@@ -115,14 +124,13 @@ li:hover {
   .glyphicon-align-justify {
       display: none;
   }
+
+  .content {
+    height: 100%;
+  }
 }
 
 @media (max-width: 767px) {
-  .container {
-    float: none;
-    width: 100%;
-  }
-
   #map {
     position:relative;
     width: 100%;
@@ -139,12 +147,10 @@ li:hover {
   header h1 {
       margin: 0;
   }
-
-  section.content {
-      padding-bottom: 10px;
-  }
 }
 
 @media (max-width: 360px) {
-
+  header, #description {
+    text-align: left;
+  }
 }
