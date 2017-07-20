@@ -2,7 +2,7 @@
 ```
 ```
 ## Project Description:
-- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best asian cuisine around Irvine, California - ranging from the top rated establishments among Korean, Chinese, Japanese, Vietnamese, Filipino and Mongolian restaurants on Foursquare.
+- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best ice cream around Irvine, California - ranging from the top rated establishments listed on Foursquare.
 
 ## Project Criteria:
 - Develop a single-page application featuring a map of a particular neighborhood.

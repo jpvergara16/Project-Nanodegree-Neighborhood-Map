@@ -28,8 +28,8 @@ $(document).ready(function() {
         });
 
         // Observables for food selections
-        self.food = ['Korean', 'Japanese', 'Chinese', 'Filipino', 'Vietnamese', 'Mongolian'];
-        self.foodSelect = ko.observable('Korean');
+        self.food = [];
+        self.foodSelect = ko.observable();
         self.foodSelect.subscribe(function(newValue) {
             updateMap(self.foodSelect, self.allVenues, true, self.markers, infoWindow);
         });
