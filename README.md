@@ -1,4 +1,4 @@
-# Udacity Front End Nanodegree Project: Neighborhood Map
+# Udacity Front-End Nanodegree Project: Neighborhood Map
 ```
 ```
 ## Project Description:
@@ -8,6 +8,7 @@
 - Develop a single-page application featuring a map of a particular neighborhood.
 - Add additional functionality to this application, including: map markers to identify popular locations or places to visit, a search function to easily discover these locations, and a list-view to support simple browsing of all locations.
 - Research and implement third-party APIs that provide additional information about each of these locations (such as StreetView images, Wikipedia articles, Yelp reviews, etc).
+- Additional info can be listed in Udacity's [Neighborhood Map Rubric](https://review.udacity.com/#!/projects/2711658591/rubric)
 
 ```
 ```

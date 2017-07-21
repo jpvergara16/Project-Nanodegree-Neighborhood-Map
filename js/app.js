@@ -41,7 +41,7 @@ var setMarkers = function (map, favList) {
 
     markers.push(marker);
   }
-  map.setCenter({lat:33.6846,lng: -117.8265});
+  map.setCenter({lat:33.696164,lng: -117.796927});
 }
 
 // Adds animation and info to a marker.
@@ -67,7 +67,7 @@ var addFoursquare = function (fav) {
     var contents ='<div><h3>' + key.name + '</h3>' +
     '<p><h5>Address: </h5>' + key.location.formattedAddress + '</p>' +
     '<p><h5>Rating: </h5>' + key.rating + '/10</p>' +
-    '<a href="' + key.canonicalUrl + '" target="_blank"><img src="images/foursquare-logomark.png" alt="Foursquare Link"></img></a></div>';
+    '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a></div>';
 
     info.setContent(contents);
   })
