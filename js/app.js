@@ -1,11 +1,14 @@
 'use strict';
 
+/* === FOURSQUARE API CREDENTIALS === */
 var client_id = 'GHE2SLTC2WDUUN2V0NGQ2JJUZW12DNKABZWYWPM1AU5PNO2V';
 var client_secret = 'WRW1ETHIVCIU12KR05BRIUVCDITOLGMD2PTYZMRZ42FFZ3ZS';
+
+// Global Variables
 var map, info;
 var markers = [];
 
-// Creates custom Google Maps map.
+/* ====== GOOGLEMAPS ======= */
 var initMap = function () {
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -69,7 +72,7 @@ var addFoursquare = function (fav) {
     info.setContent(contents);
   })
     .fail(function () {
-      info.setContent('Could Not Access Foursquare!');
+      info.setContent('Unable to retrieve Foursquare data!');
     });
 
 }
@@ -81,15 +84,15 @@ function setMapOnAll (map) {
   }
 }
 
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers () {
-  setMapOnAll(null);
-}
-
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers () {
   clearMarkers();
   markers = [];
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers () {
+  setMapOnAll(null);
 }
 
 // Triggers animation and info window for marker.
@@ -97,6 +100,7 @@ function triggerMarkerEvents (map, mark) {
   google.maps.event.trigger(mark, 'click');
 }
 
+/* ====== VIEWMODEL ======= */
 var ViewModel = function () {
   var self = this;
 
@@ -263,7 +267,7 @@ var mapStyles = [{
 
 // Pops up a window if there is an error with the Google maps <script>.
 var googleErrorHandler = function () {
-  window.alert('Could Not Load Google Map!')
+  window.alert('Google Maps failed to load, Please try again later')
   return true;
 }
 
