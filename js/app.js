@@ -20,7 +20,7 @@ var initMap = function () {
 
   info = new google.maps.InfoWindow();
 
-  setMarkers(map, icSpots);
+  setMarkers(map, iceSpots);
 }
 
 // Adds markers to the map.
@@ -72,7 +72,7 @@ var addFoursquare = function (fav) {
     info.setContent(contents);
   })
     .fail(function () {
-      info.setContent('Unable to retrieve Foursquare data!');
+      info.setContent('Unable to retrieve Foursquare data');
     });
 
 }
@@ -102,13 +102,14 @@ function triggerMarkerEvents (map, mark) {
 
 /* ====== VIEWMODEL ======= */
 var ViewModel = function () {
+  var maxSectWidth = 767;
   var self = this;
 
   self.favList = ko.observableArray([]);
   self.userInput = ko.observable('');
 
   // Populate observable array from ice cream locations.
-  icSpots.forEach(function (favInfo) {
+  iceSpots.forEach(function (favInfo) {
     self.favList.push(favInfo);
   })
 
@@ -116,6 +117,27 @@ var ViewModel = function () {
   self.markerEvents = function (mark) {
     triggerMarkerEvents(map, markers[mark.index]);
   }
+
+    // to detect when window is resized
+  self.windowWidth = ko.observable(window.innerWidth);
+  // hides intro section when browser is at certain size
+  self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
+  self.hideFilterSection = function() {
+      self.hideSect(true);
+  };
+
+  self.showFilterSection = function() {
+      self.hideSect(false);
+  };
+
+  self.viewIsSmall = function() {
+      return self.windowWidth() < maxSectWidth;
+  };
+
+  window.onresize = function() {
+      // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+      viewModel.windowWidth(window.innerWidth);
+  };
 
   // Filters list and markers based on user input in the search bar.
   self.userInput.subscribe(function (loc) {
@@ -128,7 +150,7 @@ var ViewModel = function () {
       self.favList.removeAll();
 
       // Runs through each object in favorites to compare to user input.
-      icSpots.forEach(function (favInfo) {
+      iceSpots.forEach(function (favInfo) {
         var favTitle = favInfo.title;
 
         // Runs through each letter in the location name.
@@ -167,6 +189,8 @@ var ViewModel = function () {
     }
   })
 }
+
+var viewModel = new ViewModel();
 
 var mapStyles = [{
         "featureType": "water",
@@ -271,4 +295,4 @@ var googleErrorHandler = function () {
   return true;
 }
 
-ko.applyBindings( new ViewModel() );
+ko.applyBindings(viewModel);

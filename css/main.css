@@ -1,5 +1,4 @@
 /* Style CSS */
-
 html,
 body {
     height: 100%;
@@ -8,14 +7,83 @@ body {
     font-family: fantasy;
 }
 
-::-webkit-scrollbar {
-    display: none;
-    visibility: hidden
-}
-
 #map {
     height: 100%;
     color: #2d4758
+}
+
+.search-form {
+  height: 30px;
+  width: 100%;
+  padding-left: 3px;
+  padding-right: 1px;
+  margin-bottom: 20px;
+  display: inline-flex;
+}
+
+.search-bar {
+  height: 100%;
+  width: 100%;
+  border: 0px;
+  padding-left: 5px;
+  font-size: 14px;
+  color: #000000;
+}
+
+.filter {
+  height: 100%;
+  width: 15%;
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+h5 {
+  padding-left: 5px;
+  font-size: 17px;
+}
+
+h6 {
+  display: inline;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+#search-map {
+  height: 100%;
+  padding: 0px;
+}
+
+#results {
+  height: inherit;
+  padding-right: 0px;
+  background-color: #000000;
+  color: #b7b7b7;
+}
+
+#menu {
+  max-height: 50px;
+  max-width: 50px;
+}
+
+li {
+    list-style: none;
+    padding: 10px;
+    cursor: pointer
+}
+
+li:hover {
+    background: #2F5F8F;
+    color: #B5DBF2
+}
+
+/*
+::-webkit-scrollbar {
+    display: none;
+    visibility: hidden
 }
 
 h1 {
@@ -90,17 +158,6 @@ input {
     padding: 0;
     background: #fff;
     color: #2F5F8F
-}
-
-li {
-    list-style: none;
-    padding: 10px;
-    cursor: pointer
-}
-
-li:hover {
-    background: #2F5F8F;
-    color: #B5DBF2
 }
 
 .glyphicon-align-justify,
