@@ -2,9 +2,9 @@
 ```
 ```
 ## Project Description:
-- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best ice cream around Irvine, California - ranging from the top rated establishments listed on Foursquare.
+- This project is the fifth major project for the Front-End Nanodegree Program by [Udacity](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001). This application is a local neighborhood map listing some of the best ice cream spots around Irvine, California - ranging from the top rated establishments listed on Foursquare.
 
-## Project Criteria:
+## Project Criteria (Listed in CRITERIA.txt)
 - Develop a single-page application featuring a map of a particular neighborhood.
 - Add additional functionality to this application, including: map markers to identify popular locations or places to visit, a search function to easily discover these locations, and a list-view to support simple browsing of all locations.
 - Research and implement third-party APIs that provide additional information about each of these locations (such as StreetView images, Wikipedia articles, Yelp reviews, etc).
@@ -29,6 +29,7 @@ List of developers & links to their reference projects:
 - Foursquare API
 - Bootstrap JS framework
 - Knockout JS framework
+- Grunt
 - [Snazzymaps - Mapbox Clean Theme](https://snazzymaps.com/style/119/mapbox-clean)
 ```
 ```

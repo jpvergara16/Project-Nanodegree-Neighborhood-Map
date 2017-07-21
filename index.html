@@ -5,17 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Julius Vergara">
-    <title>Best of Irvine: Asian Cuisine</title>
+    <title>Best of Irvine: Ice Cream</title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css" type="text/css">
 
     <!-- Load JS lib/files early for performance purposes -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/lib/knockout-3.4.2.min.js"></script>
+    <script src="js/location.js"></script>
     <script src="js/app.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3&callback=app.initMap" onerror="googleErrorHandler()">
     </script>
-    <script src="js/lib/knockout-3.4.2.min.js"></script>
 </head>
 
 <body>
@@ -25,29 +26,25 @@
         <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
         <header>
             <h1>Best of Irvine</h1>
-            <h3>Asian Cuisine!</h3>
+            <h3>Ice Cream!</h3>
         </header>
 
         <p id="description">
-            A look at some of 2017's best asian dining around Irvine, California -
+            A look at some of 2017's best ice cream spots around Irvine, California -
             <br> ranging from the top rated establishments on Foursquare.com !
         </p>
         <div class="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
-            <!-- Knockout data-bind food seleciton -->
-            <select data-bind='options: food,
-                               optionsCaption: "Choose a food type!",
-                               value: foodSelect'>
-            </select>
-            <input type='text' placeholder='Type here to filter locations!' data-bind="textInput: filter">
-            <!-- Go through our filtered venues observable array and list data -->
-            <div class='map-options'>
-                <ul class='options' data-bind="foreach: filteredVenues">
-                    <li data-bind="click: $parent.populateInfoFromItem">
-                        <span data-bind='text: name'></span>
-                    </li>
-                </ul>
-            </div>
+          <form class="search-form" method="get">
+            <input class ="search-bar" type="text" placeholder="Location" data-bind="textInput: userInput">
+          </form>
+
+          <div data-bind="foreach: favList">
+            <h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5>
+          </div>
         </div>
+
+        <div id="map" class="col-xs-8 col-md-10"></div>
+      </div>
     </div>
 
     <div id="map" class="col-sm-9"></div>
