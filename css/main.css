@@ -1,15 +1,44 @@
 /* Style CSS */
+
+/* for grid purposes
+* {
+  border: 5px dashed black;
+  border-width: thin;
+} */
+
 html,
 body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: fantasy;
+}
+
+body, .info_content{
+  font-family: fantasy;
 }
 
 #map {
     height: 100%;
-    color: #2d4758
+}
+
+#description {
+    font-size: 15px;
+    font-style: oblique;
+    text-align: center;
+}
+
+.content {
+    background: #B5DBF2;
+    color: black;
+    padding: 8px;
+    border-right: 5px:
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    color: #2F5F8F
 }
 
 .search-form {
@@ -52,112 +81,18 @@ h6 {
   font-size: 13px;
 }
 
-#search-map {
-  height: 100%;
-  padding: 0px;
-}
-
-#results {
-  height: inherit;
-  padding-right: 0px;
-  background-color: #000000;
-  color: #b7b7b7;
-}
-
-#menu {
-  max-height: 50px;
-  max-width: 50px;
+.ice_list {
+  overflow: scroll;
 }
 
 li {
     list-style: none;
-    padding: 10px;
     cursor: pointer
 }
 
 li:hover {
-    background: #2F5F8F;
-    color: #B5DBF2
-}
-
-/*
-::-webkit-scrollbar {
-    display: none;
-    visibility: hidden
-}
-
-h1 {
-    font-family: sans-serif;
-    margin: 15px;
-    padding-top: 15px;
-}
-
-h2 {
-    font-size: 25px
-}
-
-h3 {
-    margin: 10px;
-}
-
-h4 {
-    font-size: 18px;
-    color: #3c5f75
-}
-
-a {
-    color: #3c5f75;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 10px
-}
-
-#description {
-    font-size: 15px;
-    font-style: oblique;
-    text-align: center;
-}
-
-.content {
-    background: #2F5F8F;
-    color: #FCF6DD;
-    padding: 12px;
-}
-
-header {
-    text-align: center;
-    font-style: oblique;
-}
-
-select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    color: #2F5F8F
-}
-
-select option {
-    padding: 10px
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    color: #2F5F8F
-}
-
-.map-options {
-    margin-top: 15px;
-    height: 50%;
-    overflow: scroll;
-}
-
-.options {
-    margin: 0;
-    padding: 0;
-    background: #fff;
-    color: #2F5F8F
+    background: #F1F8FA;
+    color: black;
 }
 
 .glyphicon-align-justify,
@@ -167,7 +102,7 @@ input {
     margin: auto;
     padding: 15px 15px 0 0;
     float: right;
-    color: #B5DBF2;
+    color: black;
 }
 
 .glyphicon-align-justify:hover,
@@ -192,9 +127,6 @@ input {
     #map {
         position: relative;
         width: 100%;
-    }
-    .hide {
-        display: none;
     }
     header h4 {
         margin-top: 0;

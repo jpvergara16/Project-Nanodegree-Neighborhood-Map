@@ -21,7 +21,7 @@ var initMap = function () {
   info = new google.maps.InfoWindow();
 
   setMarkers(map, iceSpots);
-}
+};
 
 // Adds markers to the map.
 var setMarkers = function (map, favList) {
@@ -34,6 +34,7 @@ var setMarkers = function (map, favList) {
       position: {lat: fav.location.lat, lng: fav.location.lng},
       map: map,
       title: fav.title,
+      icon: 'img/icecream_mark.png',
       index: i,
     });
 
@@ -42,7 +43,7 @@ var setMarkers = function (map, favList) {
     markers.push(marker);
   }
   map.setCenter({lat:33.696164,lng: -117.796927});
-}
+};
 
 // Adds animation and info to a marker.
 var addMarkerEvents = function (map, marker, fav) {
@@ -55,7 +56,7 @@ var addMarkerEvents = function (map, marker, fav) {
     addFoursquare(fav);
     info.open(map, this);
   });
-}
+};
 
 // Adds Foursquare info in Info Window for the specific marker.
 var addFoursquare = function (fav) {
@@ -64,10 +65,15 @@ var addFoursquare = function (fav) {
   $.getJSON(fourURL, function (data) {
     var key = data.response.venue;
 
-    var contents ='<div><h3>' + key.name + '</h3>' +
+    var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
     '<p><h5>Address: </h5>' + key.location.formattedAddress + '</p>' +
     '<p><h5>Rating: </h5>' + key.rating + '/10</p>' +
-    '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a></div>';
+    '<hr>' +
+    '<p><h6>Map Built With:</h6></p>'+
+    '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
+    '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
+    '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
+
 
     info.setContent(contents);
   })
@@ -75,7 +81,7 @@ var addFoursquare = function (fav) {
       info.setContent('Unable to retrieve Foursquare data');
     });
 
-}
+};
 
 // Sets the map on all markers in the array.
 function setMapOnAll (map) {
@@ -111,12 +117,12 @@ var ViewModel = function () {
   // Populate observable array from ice cream locations.
   iceSpots.forEach(function (favInfo) {
     self.favList.push(favInfo);
-  })
+  });
 
   // Triggers animation and info window for marker when name of marker is clicked on
   self.markerEvents = function (mark) {
     triggerMarkerEvents(map, markers[mark.index]);
-  }
+  };
 
     // to detect when window is resized
   self.windowWidth = ko.observable(window.innerWidth);
@@ -166,10 +172,10 @@ var ViewModel = function () {
           if (fav.toLowerCase() == loc.toLowerCase()) {
             // Adds location name to array and exits the loop for said location name.
             self.favList.push(favInfo);
-            return
+            return;
           }
         }
-      })
+      });
 
       // Clears markers from google maps and adds the new arrays.
       deleteMarkers();
@@ -181,14 +187,14 @@ var ViewModel = function () {
 
       icecreamSpots.forEach(function (favInfo) {
         self.favList.push(favInfo);
-      })
+      });
 
       // Clears markers from google maps and adds the new arrays.
       deleteMarkers();
       setMarkers(map, self.favList());
     }
-  })
-}
+  });
+};
 
 var viewModel = new ViewModel();
 
@@ -291,8 +297,8 @@ var mapStyles = [{
 
 // Pops up a window if there is an error with the Google maps <script>.
 var googleErrorHandler = function () {
-  window.alert('Google Maps failed to load, Please try again later')
+  window.alert('Google Maps failed to load, Please try again later');
   return true;
-}
+};
 
 ko.applyBindings(viewModel);

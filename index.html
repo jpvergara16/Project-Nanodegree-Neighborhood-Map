@@ -27,16 +27,18 @@
         </header>
 
         <p id="description">
-            A look at some of 2017's best ice cream spots around Irvine, California -
-            <br> ranging from the top rated establishments on Foursquare.com !
+            A look at some of 2017's best ice cream spots around Irvine, California.
+            <br> From the top rated establishments on Foursquare.com !
         </p>
         <div class="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
           <form class="search-form" method="get">
             <input class ="search-bar" type="text" placeholder="Location" data-bind="textInput: userInput">
           </form>
 
-          <div data-bind="foreach: favList">
-            <h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5>
+          <div class="ice_list" data-bind="foreach: favList">
+            <ul>
+              <li><h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5></li>
+            <ul>
           </div>
         </div>
       </div>
