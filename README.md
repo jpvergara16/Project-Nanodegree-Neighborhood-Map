@@ -30,7 +30,6 @@ List of developers & links to their reference projects:
 - Foursquare API
 - Bootstrap JS framework
 - Knockout JS framework
-- Grunt
 - [Snazzymaps - Mapbox Clean Theme](https://snazzymaps.com/style/119/mapbox-clean)
 ```
 ```

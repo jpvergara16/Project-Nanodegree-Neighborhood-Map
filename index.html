@@ -18,12 +18,12 @@
 
 <body>
     <div class='col-sm-3 content'>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
-
-        <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
         <header>
+            <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
+
+            <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
             <h1>Best of Irvine</h1>
-            <h3>Ice Cream!</h3>
+            <h2>Ice Cream</h2>
         </header>
 
         <p id="description">
@@ -32,14 +32,14 @@
         </p>
         <div class="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
           <form class="search-form" method="get">
-            <input class ="search-bar" type="text" placeholder="Location" data-bind="textInput: userInput">
+            <input class ="search-bar" type="text" placeholder="Filter names here" data-bind="textInput: userInput">
           </form>
 
-          <div class="ice_list" data-bind="foreach: favList">
-            <ul>
-              <li><h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5></li>
-            <ul>
-          </div>
+          <ul class="ice_list">
+            <div data-bind="foreach: favList">
+                <li><h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5></li>
+            </div>
+          </ul>
         </div>
       </div>
     </div>
