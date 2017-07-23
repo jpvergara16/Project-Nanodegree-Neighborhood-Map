@@ -24,11 +24,11 @@ var initMap = function () {
 };
 
 // Adds markers to the map.
-var setMarkers = function (map, favList) {
-  for (var i = 0; i < favList.length; i++) {
-    favList[i].index = i;
+var setMarkers = function (map, topRatedList) {
+  for (var i = 0; i < topRatedList.length; i++) {
+    topRatedList[i].index = i;
 
-    var fav = favList[i];
+    var fav = topRatedList[i];
 
     var marker = new google.maps.Marker({
       position: {lat: fav.location.lat, lng: fav.location.lng},
@@ -45,7 +45,7 @@ var setMarkers = function (map, favList) {
   map.setCenter({lat:33.696164,lng: -117.796927});
 };
 
-// Adds animation and info to a marker.
+// Marker animation and click function
 var addMarkerEvents = function (map, marker, fav) {
   marker.addListener('click', function () {
     map.setCenter(marker.getPosition());
@@ -111,12 +111,12 @@ var ViewModel = function () {
   var maxSectWidth = 767;
   var self = this;
 
-  self.favList = ko.observableArray([]);
+  self.topRatedList = ko.observableArray([]);
   self.userInput = ko.observable('');
 
   // Populate observable array from ice cream locations.
-  iceSpots.forEach(function (favInfo) {
-    self.favList.push(favInfo);
+  iceSpots.forEach(function (contentInfo) {
+    self.topRatedList.push(contentInfo);
   });
 
   // Triggers animation and info window for marker when name of marker is clicked on
@@ -124,7 +124,7 @@ var ViewModel = function () {
     triggerMarkerEvents(map, markers[mark.index]);
   };
 
-    // to detect when window is resized
+  // to detect when window is resized
   self.windowWidth = ko.observable(window.innerWidth);
   // hides intro section when browser is at certain size
   self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
@@ -153,11 +153,11 @@ var ViewModel = function () {
       var locLength = loc.length;
 
       // Clears observable array.
-      self.favList.removeAll();
+      self.topRatedList.removeAll();
 
-      // Runs through each object in favorites to compare to user input.
-      iceSpots.forEach(function (favInfo) {
-        var favTitle = favInfo.title;
+      // Runs through each object in locations list to compare to user input.
+      iceSpots.forEach(function (contentInfo) {
+        var favTitle = contentInfo.title;
 
         // Runs through each letter in the location name.
         for (var i = 0; i < favTitle.length; i++) {
@@ -171,7 +171,7 @@ var ViewModel = function () {
           // Runs if the location name's string matches the user input's string.
           if (fav.toLowerCase() == loc.toLowerCase()) {
             // Adds location name to array and exits the loop for said location name.
-            self.favList.push(favInfo);
+            self.topRatedList.push(contentInfo);
             return;
           }
         }
@@ -179,25 +179,26 @@ var ViewModel = function () {
 
       // Clears markers from google maps and adds the new arrays.
       deleteMarkers();
-      setMarkers(map, self.favList());
+      setMarkers(map, self.topRatedList());
 
     }else {
-      // Clears observable array and then populates it with all of favorites' objects.
-      self.favList.removeAll();
+      // Clears observable array and then populates it with all of the locations lists' objects.
+      self.topRatedList.removeAll();
 
-      icecreamSpots.forEach(function (favInfo) {
-        self.favList.push(favInfo);
+      iceSpots.forEach(function (contentInfo) {
+        self.topRatedList.push(contentInfo);
       });
 
       // Clears markers from google maps and adds the new arrays.
       deleteMarkers();
-      setMarkers(map, self.favList());
+      setMarkers(map, self.topRatedList());
     }
   });
 };
 
 var viewModel = new ViewModel();
 
+// Styling for Google Map
 var mapStyles = [{
         "featureType": "water",
         "stylers": [{

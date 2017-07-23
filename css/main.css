@@ -87,14 +87,13 @@ h6 {
 }
 
 .ice_list {
-  overflow: scroll;
   padding: 0;
   text-align: center;
 }
 
 li {
     list-style: none;
-    padding: 1.5px;
+    padding: 0.4px;
     cursor: pointer
 }
 
