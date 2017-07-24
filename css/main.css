@@ -76,10 +76,6 @@ h4 {
   font-size: 20px;
 }
 
-h5 {
-  font-size: 17px;
-}
-
 h6 {
   display: inline;
   font-weight: bold;
@@ -88,7 +84,13 @@ h6 {
 
 .ice_list {
   padding: 0;
+  margin-top: 15px;
   text-align: center;
+}
+
+.ice_item {
+  font-size: 17px;
+  padding: 5px;
 }
 
 li {

@@ -1,6 +1,6 @@
 /* === FOURSQUARE API CREDENTIALS === */
-var client_id = 'GHE2SLTC2WDUUN2V0NGQ2JJUZW12DNKABZWYWPM1AU5PNO2V';
-var client_secret = 'WRW1ETHIVCIU12KR05BRIUVCDITOLGMD2PTYZMRZ42FFZ3ZS';
+var CLIENT_ID = 'GHE2SLTC2WDUUN2V0NGQ2JJUZW12DNKABZWYWPM1AU5PNO2V';
+var CLIENT_SECRET = 'WRW1ETHIVCIU12KR05BRIUVCDITOLGMD2PTYZMRZ42FFZ3ZS';
 
 // Global Variables
 var map, info;
@@ -24,7 +24,7 @@ var initMap = function () {
 // Adds markers to the map.
 var setMarkers = function (map, topRatedList) {
   for (var i = 0; i < topRatedList.length; i++) {
-    topRatedList[i].index = i;
+    topRatedList[i].zIndex = i;
 
     var fav = topRatedList[i];
 
@@ -33,7 +33,7 @@ var setMarkers = function (map, topRatedList) {
       map: map,
       title: fav.title,
       icon: 'img/icecream_mark.png',
-      index: i,
+      zIndex: i,
     });
 
     addMarkerEvents(map, marker, fav);
@@ -58,7 +58,8 @@ var addMarkerEvents = function (map, marker, fav) {
 
 // Adds Foursquare info in Info Window for the specific marker.
 var addFoursquare = function (fav) {
-  var fourURL = 'https://api.foursquare.com/v2/venues/' + fav.fourSqr_id + '?client_id=' + client_id + '&client_secret=' + client_secret + '&v=20170704';
+  info.setContent('');
+  var fourURL = 'https://api.foursquare.com/v2/venues/' + fav.fourSqr_id + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
   $.getJSON(fourURL, function (data) {
     var key = data.response.venue;
@@ -119,7 +120,7 @@ var ViewModel = function () {
 
   // Triggers animation and info window for marker when name of marker is clicked on
   self.markerEvents = function (mark) {
-    triggerMarkerEvents(map, markers[mark.index]);
+    triggerMarkerEvents(map, markers[mark.zIndex]);
   };
 
   // to detect when window is resized
@@ -145,7 +146,6 @@ var ViewModel = function () {
 
   // Filters list and markers based on user input in the search bar.
   self.userInput.subscribe(function (loc) {
-
     // Runs code if the search bar is not blank.
     if (loc !== '') {
       var locLength = loc.length;

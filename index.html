@@ -9,11 +9,6 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css" type="text/css">
-
-    <!-- Load JS lib/files early for performance purposes -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="js/lib/knockout-3.4.2.min.js"></script>
-    <script src="js/location.js"></script>
 </head>
 
 <body>
@@ -35,18 +30,18 @@
             <input class ="search-bar" type="text" placeholder="Filter names here" data-bind="textInput: userInput">
           </form>
 
-          <ul class="ice_list">
-            <div data-bind="foreach: topRatedList">
-                <li><h5 id="fav-loc" data-bind="text: title, click: $parent.markerEvents"></h5></li>
-            </div>
+          <ul class="ice_list" data-bind="foreach: topRatedList">
+            <li class="ice_item" data-bind="text: title, click: $parent.markerEvents"></li>
           </ul>
         </div>
-      </div>
     </div>
 
     <div id="map" class="col-sm-9"></div>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="js/lib/knockout-3.4.2.min.js"></script>
+    <script src="js/location.js"></script>
+    <script src="js/app.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3&callback=initMap" onerror="googleErrorHandler()">
+    </script>
 </body>
-<script src="js/app.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3&callback=initMap" onerror="googleErrorHandler()">
-</script>
 </html>
