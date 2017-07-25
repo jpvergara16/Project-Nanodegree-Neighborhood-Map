@@ -82,24 +82,6 @@ var addFoursquare = function (fav) {
 
 };
 
-// Sets the map on all markers in the array.
-function setMapOnAll (map) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
-}
-
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers () {
-  clearMarkers();
-  markers = [];
-}
-
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers () {
-  setMapOnAll(null);
-}
-
 // Triggers animation and info window for marker.
 function triggerMarkerEvents (map, mark) {
   google.maps.event.trigger(mark, 'click');
@@ -149,9 +131,6 @@ var ViewModel = function () {
     // Runs code if the search bar is not blank.
     if (loc !== '') {
       var locLength = loc.length;
-
-      // Clears observable array.
-      self.topRatedList.removeAll();
 
       // Runs through each object in locations list to compare to user input.
       iceSpots.forEach(function (contentInfo) {

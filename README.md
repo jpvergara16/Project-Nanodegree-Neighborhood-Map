@@ -30,11 +30,12 @@ List of developers & links to their reference projects:
 - Foursquare API
 - Bootstrap JS framework
 - Knockout JS framework
+- Bower package manager
 - [Snazzymaps - Mapbox Clean Theme](https://snazzymaps.com/style/119/mapbox-clean)
 ```
 ```
 ### Instructions on how to run
-To see the application running, go to [live version](https://jpvergara16.github.io/Project-Nanodegree-Neighborhood-Map/) or download it from this Github repository and load the index.html into your browser.
+To see the application running, go to [live version](https://jpvergara16.github.io/Project-Nanodegree-Neighborhood-Map/) or download it from this Github repository and load the index.html into your browser. Please address any issues that need to be address [here](https://github.com/jpvergara16/Project-Nanodegree-Neighborhood-Map/issues)
 
 ### License
 
