@@ -25,12 +25,12 @@
             A look at some of 2017's best ice cream spots around Irvine, California.
             <br> From the top rated establishments on Foursquare.com !
         </p>
-        <div class="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
+        <div id="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
           <form class="search-form" method="get">
             <input class ="search-bar" type="text" placeholder="Filter By Name" data-bind="textInput: userInput">
           </form>
 
-          <ul class="ice_list" data-bind="foreach: topRatedList">
+          <ul class="ice_list" data-bind="foreach: iceCreamSpots">
             <li class="ice_item" data-bind="text: title, click: $parent.markerEvents"></li>
           </ul>
         </div>

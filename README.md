@@ -22,6 +22,7 @@ List of developers & links to their reference projects:
 - [richgieg](https://github.com/richgieg/NeighborhoodMap)
 - [renurevzranju](https://github.com/renurevzranju/map)
 - [tamminhdao](https://github.com/tamminhdao/NeighborhoodMap)
+- [TViPE](https://github.com/TViPE/FEND-NeighborHood-Map)
 
 ```
 ```

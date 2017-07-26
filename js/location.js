@@ -1,6 +1,6 @@
 /* ====== MODEL ======= */
 // LatLng info for ice cream locations
-var iceSpots = [{
+var iceCreamSpots = [{
     title: 'Stricklands Ice Cream',
     location: {
         lat: 33.649907,

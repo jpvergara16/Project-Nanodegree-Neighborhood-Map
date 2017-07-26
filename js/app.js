@@ -3,62 +3,73 @@ var CLIENT_ID = 'GHE2SLTC2WDUUN2V0NGQ2JJUZW12DNKABZWYWPM1AU5PNO2V';
 var CLIENT_SECRET = 'WRW1ETHIVCIU12KR05BRIUVCDITOLGMD2PTYZMRZ42FFZ3ZS';
 
 // Global Variables
-var map, info;
+var map, infoWindow, viewModel;
 var markers = [];
 
 /* ====== GOOGLEMAPS ======= */
 var initMap = function () {
+  var centreMap = {lat:33.696164,lng: -117.796927};
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
     scrollwheel: false,
     zoom: 12,
+    center: centreMap,
     styles: mapStyles,
     mapTypeControl: false
   });
 
-  info = new google.maps.InfoWindow();
+    infoWindow = new google.maps.InfoWindow();
 
-  setMarkers(map, iceSpots);
+    for (var j = 0; j < iceCreamSpots.length; j++) {
+        iceCreamSpots[j].zIndex = j;
+
+        var fav = iceCreamSpots[j];
+
+        var marker = new google.maps.Marker({
+          position: {lat: fav.location.lat, lng: fav.location.lng},
+          map: map,
+          title: fav.title,
+          icon: 'img/icecream_mark.png',
+          zIndex: j,
+        });
+
+        markers.push(marker);
+        viewModel.topRatedList()[j].marker = marker;
+
+        google.maps.event.addListener(marker, 'click', clickOpen(marker, j))
+    }
 };
 
-// Adds markers to the map.
-var setMarkers = function (map, topRatedList) {
-  for (var i = 0; i < topRatedList.length; i++) {
-    topRatedList[i].zIndex = i;
-
-    var fav = topRatedList[i];
-
-    var marker = new google.maps.Marker({
-      position: {lat: fav.location.lat, lng: fav.location.lng},
-      map: map,
-      title: fav.title,
-      icon: 'img/icecream_mark.png',
-      zIndex: i,
+var clickOpen = function() {
+  return function() {
+    // Marker animation and click function{
+    marker.addListener('click', function () {
+      // show Foursquare info inside infowindow when clicked
+      addFoursquare(this, infoWindow);
+      infoWindow.open(map, this);
     });
-
-    addMarkerEvents(map, marker, fav);
-
-    markers.push(marker);
   }
-  map.setCenter({lat:33.696164,lng: -117.796927});
 };
 
-// Marker animation and click function
-var addMarkerEvents = function (map, marker, fav) {
-  marker.addListener('click', function () {
-    map.setCenter(marker.getPosition());
+// Adds Foursquare info to infoWindow for the specific marker.
+var addFoursquare = function (marker, infoWindow) {
+  // Check to make sure the infowindow is not already opened on this marker.
+  if (infoWindow.marker != marker) {
+    infoWindow.marker = marker;
+    infoWindow.setContent(marker.contents);
+    // sets animation to bounce 2 times when marker is clicked
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
-      marker.setAnimation(null);
+        marker.setAnimation(null);
     }, 1400);
-    addFoursquare(fav);
-    info.open(map, this);
-  });
-};
+    infoWindow.open(map, marker);
+    // Make sure the marker property is cleared if the infowindow is closed.
+    infoWindow.addListener('closeclick', function() {
+        infoWindow.setMarker = null;
+    });
+  }
 
-// Adds Foursquare info in Info Window for the specific marker.
-var addFoursquare = function (fav) {
-  info.setContent('');
+  //Obtain foursquare info via JSON
   var fourURL = 'https://api.foursquare.com/v2/venues/' + fav.fourSqr_id + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
   $.getJSON(fourURL, function (data) {
@@ -72,20 +83,24 @@ var addFoursquare = function (fav) {
     '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
     '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
     '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
-
-
-    info.setContent(contents);
-  })
+    })
     .fail(function () {
-      info.setContent('Unable to retrieve Foursquare data');
-    });
-
+    infoWindow.setContent('Unable to retrieve Foursquare data');
+  });
 };
 
 // Triggers animation and info window for marker.
 function triggerMarkerEvents (map, mark) {
   google.maps.event.trigger(mark, 'click');
 }
+
+/* === Locations constructor ==== */
+var Location = function(data) {
+  var self = this;
+  this.title = data.title;
+  this.location = data.location;
+  this.show = ko.observable(true);
+};
 
 /* ====== VIEWMODEL ======= */
 var ViewModel = function () {
@@ -96,9 +111,10 @@ var ViewModel = function () {
   self.userInput = ko.observable('');
 
   // Populate observable array from ice cream locations.
-  iceSpots.forEach(function (contentInfo) {
-    self.topRatedList.push(contentInfo);
-  });
+  for (i = 0; i < iceCreamSpots.length; i++) {
+      var contentInfo = new Location(iceCreamSpots[i]);
+      self.topRatedList.push(contentInfo);
+  }
 
   // Triggers animation and info window for marker when name of marker is clicked on
   self.markerEvents = function (mark) {
@@ -126,54 +142,28 @@ var ViewModel = function () {
       viewModel.windowWidth(window.innerWidth);
   };
 
-  // Filters list and markers based on user input in the search bar.
-  self.userInput.subscribe(function (loc) {
-    // Runs code if the search bar is not blank.
-    if (loc !== '') {
-      var locLength = loc.length;
-
-      // Runs through each object in locations list to compare to user input.
-      iceSpots.forEach(function (contentInfo) {
-        var favTitle = contentInfo.title;
-
-        // Runs through each letter in the location name.
-        for (var i = 0; i < favTitle.length; i++) {
-          var fav = '';
-
-          // Adds on additional letters to match the user input string length.
-          for (var j = 0; j < locLength; j++) {
-            fav = fav + favTitle[i+j];
+  //Filter by user input
+  self.searchFilter = ko.computed(function() {
+      var filter = self.userInput().toLowerCase(); // listens to what user types in to the input search bar
+      // iterates through myLocations observable array
+      for (j = 0; j < self.topRatedList().length; j++) {
+        // it filters myLocations as user starts typing
+          if (self.topRatedList()[j].title.toLowerCase().indexOf(filter) > -1) {
+              self.topRatedList()[j].show(true); // shows locations according to match with user key words
+              if (self.topRatedList()[j].marker) {
+                  self.topRatedList()[j].marker.setVisible(true); // shows/filters map markers according to match with user key words
+              }
+          } else {
+              self.topRatedList()[j].show(false); // hides locations according to match with user key words
+              if (self.topRatedList()[j].marker) {
+                  self.topRatedList()[j].marker.setVisible(false); // hides map markers according to match with user key words
+              }
           }
-
-          // Runs if the location name's string matches the user input's string.
-          if (fav.toLowerCase() == loc.toLowerCase()) {
-            // Adds location name to array and exits the loop for said location name.
-            self.topRatedList.push(contentInfo);
-            return;
-          }
-        }
-      });
-
-      // Clears markers from google maps and adds the new arrays.
-      deleteMarkers();
-      setMarkers(map, self.topRatedList());
-
-    }else {
-      // Clears observable array and then populates it with all of the locations lists' objects.
-      self.topRatedList.removeAll();
-
-      iceSpots.forEach(function (contentInfo) {
-        self.topRatedList.push(contentInfo);
-      });
-
-      // Clears markers from google maps and adds the new arrays.
-      deleteMarkers();
-      setMarkers(map, self.topRatedList());
-    }
+      }
   });
 };
 
-var viewModel = new ViewModel();
+viewModel = new ViewModel();
 
 // Styling for Google Map
 var mapStyles = [{
