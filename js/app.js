@@ -8,7 +8,7 @@ var markers = [];
 
 /* ====== GOOGLEMAPS ======= */
 var initMap = function () {
-  console.log("google maps initialized")
+  console.log("google maps initialized");
   var centreMap = {lat:33.696164,lng: -117.796927};
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -19,30 +19,31 @@ var initMap = function () {
     mapTypeControl: false
   });
 
-    infoWindow = new google.maps.InfoWindow();
+  infoWindow = new google.maps.InfoWindow();
 
-    for (var j = 0; j < iceCreamSpots.length; j++) {
-        iceCreamSpots[j].zIndex = j;
+  for (var j = 0; j < iceCreamSpots.length; j++) {
+      iceCreamSpots[j].zIndex = j;
 
-        var fav = iceCreamSpots[j];
+      var fav = iceCreamSpots[j];
 
-        var marker = new google.maps.Marker({
-          position: {lat: fav.location.lat, lng: fav.location.lng},
-          map: map,
-          title: fav.title,
-          icon: 'img/icecream_mark.png',
-          zIndex: j,
-        });
+      var marker = new google.maps.Marker({
+        position: {lat: fav.location.lat, lng: fav.location.lng},
+        map: map,
+        title: fav.title,
+        icon: 'img/icecream_mark.png',
+        zIndex: j,
+        fourSquareID: fav.fourSqr_id,
+      });
 
-        markers.push(marker);
-        viewModel.topRatedList()[j].marker = marker;
+      markers.push(marker);
+      viewModel.topRatedList()[j].marker = marker;
 
-        // Marker animation and click function
-        marker.addListener('click', function () {
-          // show Foursquare info inside infowindow when clicked
-          addFoursquare(this, infoWindow);
-          infoWindow.open(map, this);
-        });
+      // Marker animation and click function
+      marker.addListener('click', function () {
+        // show Foursquare info inside infowindow when clicked
+        addFoursquare(this, infoWindow);
+        infoWindow.open(map, this);
+      });
 
         // Adds Foursquare info to infoWindow for the specific marker.
         var addFoursquare = function (marker, infoWindow) {
@@ -63,10 +64,10 @@ var initMap = function () {
           }
 
         //Obtain foursquare info via JSON
-        var fourURL = 'https://api.foursquare.com/v2/venues/' + fav.fourSqr_id + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
+        var fourURL = 'https://api.foursquare.com/v2/venues/' + marker.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
         $.getJSON(fourURL, function (data) {
-          console.log("foursquare info retrieved")
+          console.log("foursquare info retrieved");
           var key = data.response.venue;
 
           var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
@@ -84,13 +85,14 @@ var initMap = function () {
           .fail(function () {
           infoWindow.setContent('Unable to retrieve Foursquare data');
         });
+
       };
-    }
+    };
 };
 
 // Triggers animation and info window for marker.
 function triggerMarkerEvents (map, mark) {
-  google.maps.event.trigger(infoWindow.marker, 'click');
+  google.maps.event.trigger(marker, 'click');
 }
 
 /* === Locations constructor ==== */
@@ -103,7 +105,7 @@ var Location = function(data) {
 
 /* ====== VIEWMODEL ======= */
 var ViewModel = function () {
-  console.log("viewModel applied successfully")
+  console.log("viewModel applied successfully");
   var maxSectWidth = 767;
   var self = this;
 
