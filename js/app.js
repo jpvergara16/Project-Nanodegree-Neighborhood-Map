@@ -8,6 +8,7 @@ var markers = [];
 
 /* ====== GOOGLEMAPS ======= */
 var initMap = function () {
+  console.log("google maps initialized")
   var centreMap = {lat:33.696164,lng: -117.796927};
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
@@ -65,6 +66,7 @@ var initMap = function () {
         var fourURL = 'https://api.foursquare.com/v2/venues/' + fav.fourSqr_id + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
         $.getJSON(fourURL, function (data) {
+          console.log("foursquare info retrieved")
           var key = data.response.venue;
 
           var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
@@ -75,6 +77,9 @@ var initMap = function () {
           '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
           '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
           '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
+
+          infoWindow.setContent(contents);
+
           })
           .fail(function () {
           infoWindow.setContent('Unable to retrieve Foursquare data');
@@ -85,7 +90,7 @@ var initMap = function () {
 
 // Triggers animation and info window for marker.
 function triggerMarkerEvents (map, mark) {
-  google.maps.event.trigger(mark, 'click');
+  google.maps.event.trigger(infoWindow.marker, 'click');
 }
 
 /* === Locations constructor ==== */
@@ -93,11 +98,12 @@ var Location = function(data) {
   var self = this;
   this.title = data.title;
   this.location = data.location;
-  this.show = ko.observable(true);
+  this.showItem = ko.observable(true);
 };
 
 /* ====== VIEWMODEL ======= */
 var ViewModel = function () {
+  console.log("viewModel applied successfully")
   var maxSectWidth = 767;
   var self = this;
 
@@ -146,13 +152,14 @@ var ViewModel = function () {
       for (j = 0; j < self.topRatedList().length; j++) {
         // it filters myLocations as user starts typing
           if (self.topRatedList()[j].title.toLowerCase().indexOf(filter) > -1) {
-              self.topRatedList()[j].show(true); // shows locations according to match with user key words
+              self.topRatedList()[j].showItem(true); // shows locations according to match with user key words
               if (self.topRatedList()[j].marker) {
                   self.topRatedList()[j].marker.setVisible(true); // shows/filters map markers according to match with user key words
               }
           } else {
-              self.topRatedList()[j].show(false); // hides locations according to match with user key words
+              self.topRatedList()[j].showItem(false); // hides locations according to match with user key words
               if (self.topRatedList()[j].marker) {
+
                   self.topRatedList()[j].marker.setVisible(false); // hides map markers according to match with user key words
               }
           }
