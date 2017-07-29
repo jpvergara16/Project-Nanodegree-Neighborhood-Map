@@ -14,9 +14,6 @@
 <body>
     <div class='col-sm-3 content'>
         <header>
-            <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !hideSect() && viewIsSmall()"></span>
-
-            <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: hideSect() &&  viewIsSmall()"></span>
             <h1>Best of Irvine</h1>
             <h2>Ice Cream</h2>
         </header>
@@ -25,13 +22,13 @@
             A look at some of 2017's best ice cream spots around Irvine, California.
             <br> From the top rated establishments on Foursquare.com !
         </p>
-        <div id="hid" data-bind="visible: !viewIsSmall() || !hideSect()">
+        <div id="hid">
           <form class="search-form" method="get">
-            <input class ="search-bar" type="text" placeholder="Filter By Name" data-bind="textInput: userInput">
+            <input class ="search-bar" type="text" placeholder="Filter By Name" data-bind="textInput: userInput, valueUpdate: 'keyup'">
           </form>
 
-          <ul class="ice_list" data-bind="foreach: topRatedList">
-            <li class="ice_item" data-bind="text: title, click: $parent.markerEvents, visible: showItem"></li>
+          <ul class="ice_list" data-bind="foreach: searchFilter">
+            <li class="ice_item" data-bind="text: title, click: $parent.markerEvents"></li>
           </ul>
         </div>
     </div>
@@ -39,9 +36,8 @@
     <div id="map" class="col-sm-9"></div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src="js/lib/knockout-3.4.2.min.js"></script>
-    <script src="js/location.js"></script>
-    <script src="js/app.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3&callback=initMap" onerror="googleErrorHandler()">
+    <script src="js/new2.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?&key=AIzaSyAG80wWCLNzyQdA7qBp4nvOOM974RZkJwo&v=3&callback=initApp" onerror="googleErrorHandler()">
     </script>
 </body>
 </html>

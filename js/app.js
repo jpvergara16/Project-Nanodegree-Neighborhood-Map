@@ -13,7 +13,7 @@ var initMap = function () {
   // Create a map object and specify the DOM element for display.
   map = new google.maps.Map(document.getElementById('map'), {
     scrollwheel: false,
-    zoom: 12,
+    zoom: 13,
     center: centreMap,
     styles: mapStyles,
     mapTypeControl: false
@@ -35,60 +35,60 @@ var initMap = function () {
         fourSquareID: fav.fourSqr_id,
       });
 
-      markers.push(marker);
-      viewModel.topRatedList()[j].marker = marker;
-
-      // Marker animation and click function
-      marker.addListener('click', function () {
-        // show Foursquare info inside infowindow when clicked
-        addFoursquare(this, infoWindow);
-        infoWindow.open(map, this);
-      });
-
-        // Adds Foursquare info to infoWindow for the specific marker.
-        var addFoursquare = function (marker, infoWindow) {
-          // Check to make sure the infowindow is not already opened on this marker.
-          if (infoWindow.marker != marker) {
-            infoWindow.marker = marker;
-            infoWindow.setContent(marker.contents);
-            // sets animation to bounce 2 times when marker is clicked
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function() {
-                marker.setAnimation(null);
-            }, 1400);
-            infoWindow.open(map, marker);
-            // Make sure the marker property is cleared if the infowindow is closed.
-            infoWindow.addListener('closeclick', function() {
-                infoWindow.setMarker = null;
-            });
-          }
-
-        //Obtain foursquare info via JSON
-        var fourURL = 'https://api.foursquare.com/v2/venues/' + marker.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
-
-        $.getJSON(fourURL, function (data) {
-          console.log("foursquare info retrieved");
-          var key = data.response.venue;
-
-          var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
-          '<p><h5>Address: </h5>' + key.location.formattedAddress + '</p>' +
-          '<p><h5>Rating: </h5>' + key.rating + '/10</p>' +
-          '<hr>' +
-          '<p><h6>Map Built With:</h6></p>'+
-          '<a href="' + key.canonicalUrl + '" target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
-          '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
-          '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
-
-          infoWindow.setContent(contents);
-
-          })
-          .fail(function () {
-          infoWindow.setContent('Unable to retrieve Foursquare data');
-        });
-
-      };
-    };
+  markers.push(marker); //store marker info in markers array
+  viewModel.topRatedList()[j].marker = marker;
+  }
 };
+
+// Marker animation and click function
+marker.addListener('click', function () {
+  // show Foursquare info inside infowindow when clicked
+  addFoursquare(this, infoWindow);
+  infoWindow.open(map, this);
+});
+
+// Adds Foursquare info to infoWindow for the specific marker.
+var addFoursquare = function (marker, infoWindow) {
+  // Check to make sure the infowindow is not already opened on this marker.
+  if (infoWindow.marker != marker) {
+    infoWindow.marker = marker;
+    infoWindow.setContent(marker.contents);
+    // sets animation to bounce 2 times when marker is clicked
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+        marker.setAnimation(null);
+    }, 1400);
+    infoWindow.open(map, marker);
+    // Make sure the marker property is cleared if the infowindow is closed.
+    infoWindow.addListener('closeclick', function() {
+        infoWindow.setMarker = null;
+    });
+  }
+
+  //Obtain foursquare info via JSON
+  var fourURL = 'https://api.foursquare.com/v2/venues/' + marker.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
+
+  $.getJSON(fourURL, function (data) {
+    console.log("foursquare info retrieved");
+    var key = data.response.venue;
+
+    var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
+    '<p><h5>Address: </h5>' + key.location.formattedAddress + '</p>' +
+    '<p><h5>Rating: </h5>' + key.rating + '/10</p>' +
+    '<hr>' +
+    '<p><h6>Map Built With:</h6></p>'+
+    '<a href=https://foursquare.com/ target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
+    '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
+    '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
+
+    infoWindow.setContent(contents);
+
+    })
+    .fail(function () {
+    infoWindow.setContent('Unable to retrieve Foursquare data');
+  });
+};
+
 
 // Triggers animation and info window for marker.
 function triggerMarkerEvents (map, mark) {
