@@ -33,6 +33,10 @@ header {
   margin-bottom: 10px;
 }
 
+section {
+  text-align: center;
+}
+
 .content {
     background: #B5DBF2;
     color: black;
@@ -84,12 +88,12 @@ h6 {
 
 .ice_list {
   padding: 0;
-  margin-top: 15px;
+  margin-top: 13px;
   text-align: center;
 }
 
 .ice_item {
-  font-size: 17px;
+  font-size: 13px;
   padding: 5px;
 }
 

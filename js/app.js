@@ -30,22 +30,24 @@ var Location = function(data) {
 
     this.title = data.title;
     this.position = data.location;
-    this.id = data.fourSqr_id;
-    this.street = '';
-    this.city = '';
+    this.fourSquareID = data.fourSqr_id;
+    this.address = '';
+    this.rating = '';
     this.phone = '';
 
     this.visible = ko.observable(true);
 
     // get JSON request of foursquare data
-    var reqURL = 'https://api.foursquare.com/v2/venues/search?ll=' + this.position.lat + ',' + this.position.lng + '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704' + '&query=' + this.title;
+    var fourURL = 'https://api.foursquare.com/v2/venues/' + this.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
-    $.getJSON(reqURL).done(function(data) {
+    $.getJSON(fourURL).done(function(data) {
     console.log("foursquare info retrieved");
-		var results = data.response.venues[0];
-        self.street = results.location.formattedAddress[0] ? results.location.formattedAddress[0]: 'N/A';
-        self.city = results.location.formattedAddress[1] ? results.location.formattedAddress[1]: 'N/A';
-        self.phone = results.contact.formattedPhone ? results.contact.formattedPhone : 'N/A';
+		var key = data.response.venue;
+
+    self.address = key.location.formattedAddress;
+    self.rating = key.rating;
+    self.phone = key.contact.formattedPhone;
+
     }).fail(function() {
         alert('Something went wrong with foursquare');
     });
@@ -71,7 +73,7 @@ var Location = function(data) {
 
     // Opens an info window on selected location on clicked marker
     this.marker.addListener('click', function() {
-        populateInfoWindow(this, self.street, self.city, self.phone, infoWindow);
+        populateInfoWindow(this, self.address, self.rating, self.phone, infoWindow);
         toggleBounce(this);
         // Pans the map view to selected marker when list view Location is clicked
         map.panTo(this.getPosition());
@@ -89,6 +91,7 @@ var Location = function(data) {
 
 };
 
+//function for marker bounce animation
 function toggleBounce(marker) {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -133,48 +136,22 @@ var ViewModel = function() {
 };
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
-function populateInfoWindow(marker, street, city, phone, infowindow) {
+function populateInfoWindow(marker, address, rating, phone, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
         // Sets default infowindow content to give the streetview time to load.
         infowindow.setContent('<p>Loading foursquare data...<p>');
         infowindow.marker = marker;
 
+        // TODO: fix proper streetview functionality
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
         });
-        var streetViewService = new google.maps.StreetViewService();
-        var radius = 50;
 
-        var windowContent = '<h4>' + marker.title + '</h4>' +
-            '<p>' + street + "<br>" + city + '<br>' + phone + "</p>";
-
-        // In case the status is OK, which means the pano was found, compute the
-        // position of the streetview image, then calculate the heading, then get a
-        // panorama from that and set the options
-        var getStreetView = function (data, status) {
-            if (status == google.maps.StreetViewStatus.OK) {
-                var nearStreetViewLocation = data.location.latLng;
-                var heading = google.maps.geometry.spherical.computeHeading(
-                    nearStreetViewLocation, marker.position);
-                infowindow.setContent(windowContent + '<div id="pano"></div>');
-                var panoramaOptions = {
-                    position: nearStreetViewLocation,
-                    pov: {
-                        heading: heading,
-                        pitch: 20
-                    }
-                };
-                var panorama = new google.maps.StreetViewPanorama(
-                    document.getElementById('pano'), panoramaOptions);
-            } else {
-                infowindow.setContent(windowContent + '<div style="color: red">No Street View Found</div>');
-            }
-        };
-        // Use streetview service to get the closest streetview image within
-        // 50 meters of the markers position
-        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+        var mainContent = '<div class="info_content"><h3 class="info_title">' + marker.title + '</h3>' + '<p><h5>Address: </h5>' + address + '</p>' + '<p><h5>Rating: </h5>' + rating + '/10</p>' + '<p><h5>Phone: </h5>' + phone + '</p>';
+        //sets content to be mainContent string
+        infowindow.setContent(mainContent);
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
