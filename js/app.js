@@ -3,173 +3,182 @@ var CLIENT_ID = 'GHE2SLTC2WDUUN2V0NGQ2JJUZW12DNKABZWYWPM1AU5PNO2V';
 var CLIENT_SECRET = 'WRW1ETHIVCIU12KR05BRIUVCDITOLGMD2PTYZMRZ42FFZ3ZS';
 
 // Global Variables
-var map, infoWindow, viewModel;
-var markers = [];
+var map, infoWindow, bounds;
 
 /* ====== GOOGLEMAPS ======= */
-var initMap = function () {
+function initMap() {
   console.log("google maps initialized");
   var centreMap = {lat:33.696164,lng: -117.796927};
-  // Create a map object and specify the DOM element for display.
-  map = new google.maps.Map(document.getElementById('map'), {
-    scrollwheel: false,
-    zoom: 13,
-    center: centreMap,
-    styles: mapStyles,
-    mapTypeControl: false
-  });
+    map = new google.maps.Map(document.getElementById('map'), {
+        scrollwheel: false,
+        zoom: 13,
+        center: centreMap,
+        styles: mapStyles,
+        mapTypeControl: false
+    });
 
-  infoWindow = new google.maps.InfoWindow();
+    infoWindow = new google.maps.InfoWindow();
 
-  for (var j = 0; j < iceCreamSpots.length; j++) {
-      iceCreamSpots[j].zIndex = j;
+    bounds = new google.maps.LatLngBounds();
 
-      var fav = iceCreamSpots[j];
+    ko.applyBindings(new ViewModel());
+}
 
-      var marker = new google.maps.Marker({
-        position: {lat: fav.location.lat, lng: fav.location.lng},
-        map: map,
-        title: fav.title,
-        icon: 'img/icecream_mark.png',
-        zIndex: j,
-        fourSquareID: fav.fourSqr_id,
-      });
+/* === Location constructor ==== */
+var Location = function(data) {
+    var self = this;
 
-  markers.push(marker); //store marker info in markers array
-  viewModel.topRatedList()[j].marker = marker;
-  }
+    this.title = data.title;
+    this.position = data.location;
+    this.id = data.fourSqr_id;
+    this.street = '';
+    this.city = '';
+    this.phone = '';
+
+    this.visible = ko.observable(true);
+
+    // get JSON request of foursquare data
+    var reqURL = 'https://api.foursquare.com/v2/venues/search?ll=' + this.position.lat + ',' + this.position.lng + '&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704' + '&query=' + this.title;
+
+    $.getJSON(reqURL).done(function(data) {
+    console.log("foursquare info retrieved");
+		var results = data.response.venues[0];
+        self.street = results.location.formattedAddress[0] ? results.location.formattedAddress[0]: 'N/A';
+        self.city = results.location.formattedAddress[1] ? results.location.formattedAddress[1]: 'N/A';
+        self.phone = results.contact.formattedPhone ? results.contact.formattedPhone : 'N/A';
+    }).fail(function() {
+        alert('Something went wrong with foursquare');
+    });
+
+    // Create a marker per location, and put into markers array
+    this.marker = new google.maps.Marker({
+        position: this.position,
+        title: this.title,
+        animation: google.maps.Animation.DROP,
+        icon: 'img/icecream_mark.png'
+    });
+
+    self.filterMarkers = ko.computed(function () {
+        // set marker and extend bounds (showListings)
+        if(self.visible() === true) {
+            self.marker.setMap(map);
+            bounds.extend(self.marker.position);
+            map.fitBounds(bounds);
+        } else {
+            self.marker.setMap(null);
+        }
+    });
+
+    // Opens an info window on selected location on clicked marker
+    this.marker.addListener('click', function() {
+        populateInfoWindow(this, self.street, self.city, self.phone, infoWindow);
+        toggleBounce(this);
+        // Pans the map view to selected marker when list view Location is clicked
+        map.panTo(this.getPosition());
+    });
+
+    // show item info when selected from list
+    this.markerEvents = function(location) {
+        google.maps.event.trigger(self.marker, 'click');
+    };
+
+    // creates bounce effect when item selected
+    this.bounce = function(place) {
+		google.maps.event.trigger(self.marker, 'click');
+	};
+
 };
 
-// Marker animation and click function
-marker.addListener('click', function () {
-  // show Foursquare info inside infowindow when clicked
-  addFoursquare(this, infoWindow);
-  infoWindow.open(map, this);
-});
-
-// Adds Foursquare info to infoWindow for the specific marker.
-var addFoursquare = function (marker, infoWindow) {
-  // Check to make sure the infowindow is not already opened on this marker.
-  if (infoWindow.marker != marker) {
-    infoWindow.marker = marker;
-    infoWindow.setContent(marker.contents);
-    // sets animation to bounce 2 times when marker is clicked
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function() {
         marker.setAnimation(null);
     }, 1400);
-    infoWindow.open(map, marker);
-    // Make sure the marker property is cleared if the infowindow is closed.
-    infoWindow.addListener('closeclick', function() {
-        infoWindow.setMarker = null;
-    });
   }
-
-  //Obtain foursquare info via JSON
-  var fourURL = 'https://api.foursquare.com/v2/venues/' + marker.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
-
-  $.getJSON(fourURL, function (data) {
-    console.log("foursquare info retrieved");
-    var key = data.response.venue;
-
-    var contents ='<div class="info_content"><h3 class="info_title">' + key.name + '</h3>' +
-    '<p><h5>Address: </h5>' + key.location.formattedAddress + '</p>' +
-    '<p><h5>Rating: </h5>' + key.rating + '/10</p>' +
-    '<hr>' +
-    '<p><h6>Map Built With:</h6></p>'+
-    '<a href=https://foursquare.com/ target="_blank"><img src="img/foursqr_logo.png" alt="Foursquare Link"></img></a>' +
-    '<a href=https://developers.google.com/maps/ target="_blank"><img src="img/googlemaps.png" alt="Google Maps API Link"></img></a>' +
-    '<a href=http://knockoutjs.com/ target="_blank"><img src="img/knockout.png" alt="Knockout JS Link"></img></a></div>';
-
-    infoWindow.setContent(contents);
-
-    })
-    .fail(function () {
-    infoWindow.setContent('Unable to retrieve Foursquare data');
-  });
-};
-
-
-// Triggers animation and info window for marker.
-function triggerMarkerEvents (map, mark) {
-  google.maps.event.trigger(marker, 'click');
 }
 
-/* === Locations constructor ==== */
-var Location = function(data) {
-  var self = this;
-  this.title = data.title;
-  this.location = data.location;
-  this.showItem = ko.observable(true);
-};
-
 /* ====== VIEWMODEL ======= */
-var ViewModel = function () {
-  console.log("viewModel applied successfully");
-  var maxSectWidth = 767;
-  var self = this;
+var ViewModel = function() {
+    console.log("ViewModel applied successfully");
+    var self = this;
 
-  //Tracks user input
-  self.userInput = ko.observable('');
-  //Stores all location info
-  self.topRatedList = ko.observableArray([]);
+    // Stores user input
+    this.userInput = ko.observable('');
+    this.topRatedList = ko.observableArray([]);
 
-  // Populate observable array from ice cream locations.
-  for (i = 0; i < iceCreamSpots.length; i++) {
-      var contentInfo = new Location(iceCreamSpots[i]);
-      self.topRatedList.push(contentInfo);
-  }
+    // get the locations from iceCreamSpots array & stores them in an observable array
+    iceCreamSpots.forEach(function(location) {
+        self.topRatedList.push( new Location(location) );
+    });
 
-  // Triggers animation and info window for marker when name of marker is clicked on
-  self.markerEvents = function (mark) {
-    triggerMarkerEvents(map, markers[mark.zIndex]);
-  };
-
-  // to detect when window is resized
-  self.windowWidth = ko.observable(window.innerWidth);
-  // hides intro section when browser is at certain size
-  self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
-
-  self.hideFilterSection = function() {
-      self.hideSect(true);
-  };
-
-  self.showFilterSection = function() {
-      self.hideSect(false);
-  };
-
-  self.viewIsSmall = function() {
-      return self.windowWidth() < maxSectWidth;
-  };
-
-  window.onresize = function() {
-      // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
-      viewModel.windowWidth(window.innerWidth);
-  };
-
-  //Filter by user input
-  self.searchFilter = ko.computed(function() {
-      var filter = self.userInput().toLowerCase(); // listens to what user types in to the input search bar
-      // iterates through myLocations observable array
-      for (j = 0; j < self.topRatedList().length; j++) {
-        // it filters myLocations as user starts typing
-          if (self.topRatedList()[j].title.toLowerCase().indexOf(filter) > -1) {
-              self.topRatedList()[j].showItem(true); // shows locations according to match with user key words
-              if (self.topRatedList()[j].marker) {
-                  self.topRatedList()[j].marker.setVisible(true); // shows/filters map markers according to match with user key words
-              }
-          } else {
-              self.topRatedList()[j].showItem(false); // hides locations according to match with user key words
-              if (self.topRatedList()[j].marker) {
-
-                  self.topRatedList()[j].marker.setVisible(false); // hides map markers according to match with user key words
-              }
-          }
-      }
-  });
+    //Filter through observableArray and filter results using knockouts utils.arrayFilter();
+    this.searchFilter = ko.computed(function() {
+        var filter = self.userInput().toLowerCase();
+        if (filter) {
+            return ko.utils.arrayFilter(self.topRatedList(), function(location) {
+                var str = location.title.toLowerCase();
+                var result = str.includes(filter);
+                location.visible(result);
+				return result;
+			});
+        }
+        self.topRatedList().forEach(function(location) {
+            location.visible(true);
+        });
+        return self.topRatedList();
+    }, self);
 };
 
-viewModel = new ViewModel();
+// This function populates the infowindow when the marker is clicked. We'll only allow
+function populateInfoWindow(marker, street, city, phone, infowindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+        // Sets default infowindow content to give the streetview time to load.
+        infowindow.setContent('<p>Loading foursquare data...<p>');
+        infowindow.marker = marker;
+
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+        });
+        var streetViewService = new google.maps.StreetViewService();
+        var radius = 50;
+
+        var windowContent = '<h4>' + marker.title + '</h4>' +
+            '<p>' + street + "<br>" + city + '<br>' + phone + "</p>";
+
+        // In case the status is OK, which means the pano was found, compute the
+        // position of the streetview image, then calculate the heading, then get a
+        // panorama from that and set the options
+        var getStreetView = function (data, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+                var nearStreetViewLocation = data.location.latLng;
+                var heading = google.maps.geometry.spherical.computeHeading(
+                    nearStreetViewLocation, marker.position);
+                infowindow.setContent(windowContent + '<div id="pano"></div>');
+                var panoramaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                        heading: heading,
+                        pitch: 20
+                    }
+                };
+                var panorama = new google.maps.StreetViewPanorama(
+                    document.getElementById('pano'), panoramaOptions);
+            } else {
+                infowindow.setContent(windowContent + '<div style="color: red">No Street View Found</div>');
+            }
+        };
+        // Use streetview service to get the closest streetview image within
+        // 50 meters of the markers position
+        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+        // Open the infowindow on the correct marker.
+        infowindow.open(map, marker);
+    }
+}
 
 // Styling for Google Map
 var mapStyles = [{
@@ -274,5 +283,3 @@ var googleErrorHandler = function () {
   window.alert('Google Maps failed to load, Please try again later');
   return true;
 };
-
-ko.applyBindings(viewModel);
