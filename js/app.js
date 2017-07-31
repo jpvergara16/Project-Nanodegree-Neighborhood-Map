@@ -106,6 +106,7 @@ function toggleBounce(marker) {
 /* ====== VIEWMODEL ======= */
 var ViewModel = function() {
     console.log("ViewModel applied successfully");
+    var maxSectWidth = 767;
     var self = this;
 
     // Stores user input
@@ -116,6 +117,27 @@ var ViewModel = function() {
     iceCreamSpots.forEach(function(location) {
         self.topRatedList.push( new Location(location) );
     });
+
+    // to detect when window is resized
+    self.windowWidth = ko.observable(window.innerWidth);
+    // hides intro section when browser is at certain size
+    self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
+    self.hideFilterSection = function() {
+      self.hideSect(true);
+    };
+
+    self.showFilterSection = function() {
+      self.hideSect(false);
+    };
+
+    self.viewIsSmall = function() {
+      return self.windowWidth() < maxSectWidth;
+    };
+
+    window.onresize = function() {
+      // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+      self.windowWidth(window.innerWidth);
+    };
 
     //Filter through observableArray and filter results using knockouts utils.arrayFilter();
     this.searchFilter = ko.computed(function() {
@@ -260,3 +282,4 @@ var googleErrorHandler = function () {
   window.alert('Google Maps failed to load, Please try again later');
   return true;
 };
+
