@@ -7,8 +7,11 @@ var map, infoWindow, bounds;
 
 /* ====== GOOGLEMAPS ======= */
 function initMap() {
-  console.log("google maps initialized");
-  var centreMap = {lat:33.696164,lng: -117.796927};
+    console.log("google maps initialized");
+    var centreMap = {
+        lat: 33.696164,
+        lng: -117.796927
+    };
     map = new google.maps.Map(document.getElementById('map'), {
         scrollwheel: false,
         zoom: 13,
@@ -41,12 +44,12 @@ var Location = function(data) {
     var fourURL = 'https://api.foursquare.com/v2/venues/' + this.fourSquareID + '?client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20170704';
 
     $.getJSON(fourURL).done(function(data) {
-    console.log("foursquare info retrieved");
-		var key = data.response.venue;
+        console.log("foursquare info retrieved");
+        var key = data.response.venue;
 
-    self.address = key.location.formattedAddress;
-    self.rating = key.rating;
-    self.phone = key.contact.formattedPhone;
+        self.address = key.location.formattedAddress;
+        self.rating = key.rating;
+        self.phone = key.contact.formattedPhone || "<p style='color:red;font-weight:bold'>No phone number available</p>";
 
     }).fail(function() {
         alert('Something went wrong with foursquare');
@@ -60,12 +63,14 @@ var Location = function(data) {
         icon: 'img/icecream_mark.png'
     });
 
-    self.filterMarkers = ko.computed(function () {
+    self.filterMarkers = ko.computed(function() {
         // set marker and extend bounds (showListings)
-        if(self.visible() === true) {
+        if (self.visible() === true) {
             self.marker.setMap(map);
             bounds.extend(self.marker.position);
-            map.fitBounds(bounds);
+            google.maps.event.addDomListener(window, 'resize', function() {
+                map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
+            });
         } else {
             self.marker.setMap(null);
         }
@@ -86,21 +91,21 @@ var Location = function(data) {
 
     // creates bounce effect when item selected
     this.bounce = function(place) {
-		google.maps.event.trigger(self.marker, 'click');
-	};
+        google.maps.event.trigger(self.marker, 'click');
+    };
 
 };
 
 //function for marker bounce animation
 function toggleBounce(marker) {
-  if (marker.getAnimation() !== null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function() {
+    if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
-    }, 1400);
-  }
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            marker.setAnimation(null);
+        }, 1400);
+    }
 }
 
 /* ====== VIEWMODEL ======= */
@@ -115,7 +120,7 @@ var ViewModel = function() {
 
     // get the locations from iceCreamSpots array & stores them in an observable array
     iceCreamSpots.forEach(function(location) {
-        self.topRatedList.push( new Location(location) );
+        self.topRatedList.push(new Location(location));
     });
 
     // to detect when window is resized
@@ -123,20 +128,20 @@ var ViewModel = function() {
     // hides intro section when browser is at certain size
     self.hideSect = ko.observable(self.windowWidth() < maxSectWidth);
     self.hideFilterSection = function() {
-      self.hideSect(true);
+        self.hideSect(true);
     };
 
     self.showFilterSection = function() {
-      self.hideSect(false);
+        self.hideSect(false);
     };
 
     self.viewIsSmall = function() {
-      return self.windowWidth() < maxSectWidth;
+        return self.windowWidth() < maxSectWidth;
     };
 
     window.onresize = function() {
-      // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
-      self.windowWidth(window.innerWidth);
+        // Idea from http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+        self.windowWidth(window.innerWidth);
     };
 
     //Filter through observableArray and filter results using knockouts utils.arrayFilter();
@@ -147,8 +152,8 @@ var ViewModel = function() {
                 var str = location.title.toLowerCase();
                 var result = str.includes(filter);
                 location.visible(result);
-				return result;
-			});
+                return result;
+            });
         }
         self.topRatedList().forEach(function(location) {
             location.visible(true);
@@ -171,7 +176,7 @@ function populateInfoWindow(marker, address, rating, phone, infowindow) {
             infowindow.marker = null;
         });
 
-        var mainContent = '<div class="info_content"><h3 class="info_title">' + marker.title + '</h3>' + '<p><h5>Address: </h5>' + address + '</p>' + '<p><h5>Rating: </h5>' + rating + '/10</p>' + '<p><h5>Phone: </h5>' + phone + '</p>';
+        var mainContent = '<div class="info_content"><h4 class="info_title">' + marker.title + '</h4>' + '<p><h5>Address: </h5>' + address + '</p>' + '<p><h5>Rating: </h5>' + rating + '/10</p>' + '<p><h5>Phone: </h5>' + phone + '</p>';
         //sets content to be mainContent string
         infowindow.setContent(mainContent);
         // Open the infowindow on the correct marker.
@@ -278,8 +283,7 @@ var mapStyles = [{
 ];
 
 // Pops up a window if there is an error with the Google maps <script>.
-var googleErrorHandler = function () {
-  window.alert('Google Maps failed to load, Please try again later');
-  return true;
+function googleErrorHandler() {
+    window.alert('Google Maps failed to load, Please try again later');
+    return true;
 };
-

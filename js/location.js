@@ -55,7 +55,7 @@ var iceCreamSpots = [{
         lng: -117.838995
     },
     zIndex: 7,
-    fourSqr_id: '',
+    fourSqr_id: '543890f7498ea549c86ea49c',
 }, {
     title: 'Cold Stone Creamery',
     location: {
