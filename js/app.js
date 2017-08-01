@@ -286,4 +286,4 @@ var mapStyles = [{
 function googleErrorHandler() {
     window.alert('Google Maps failed to load, Please try again later');
     return true;
-};
+}
