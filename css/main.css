@@ -14,7 +14,7 @@ body {
 }
 
 body, .info_content{
-  font-family: fantasy;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 #map, main {
@@ -25,11 +25,12 @@ body, .info_content{
     font-size: 15px;
     font-style: oblique;
     text-align: center;
+    border-top: 2px solid gray;
+    padding-top: 1.2em;
 }
 
 header {
   text-align: center;
-  border: 2px groove #707070;
   margin-bottom: 10px;
 }
 
